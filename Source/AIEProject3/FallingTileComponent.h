@@ -24,6 +24,21 @@ public:
 	// Called every frame
 	virtual void TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction) override;
 
+	//Controls the units per second the tile falls fore
+	UPROPERTY(EditInstanceOnly)
+	float FallSpeed = 10.0f;
+
+	void OnHit(UPrimitiveComponent* HitComponent, AActor* OtherActor, UPrimitiveComponent* OtherComponent, FVector NormalImpulse, const FHitResult& Hit);
+
 private:
+	//Reference to the actor owning this component
 	AActor* OwningActor;
+
+	//When true, the platform will start falling
+	bool bShouldFall = true;
+
+	//Handles falling logic
+	void Fall(float DeltaTime);
+
+
 };

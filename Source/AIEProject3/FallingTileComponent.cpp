@@ -30,8 +30,17 @@ void UFallingTileComponent::BeginPlay()
 	{
 		//tell the designer they are silly and need to enable physics 
 		UE_LOG(LogTemp, Warning, TEXT("Object %s requires physics to be enabled for FallingTile to run."), *OwningActor->GetName());
+		return;
+	}
+
+	UPrimitiveComponent* Primitive = Cast<UPrimitiveComponent>(OwningActor->GetRootComponent());
+	if (!Primitive)
+	{
+		UE_LOG(LogTemp, Warning, TEXT("Casting %s to Primitive failed"), *OwningActor->GetName());
 	}
 	
+	//Enables hit events
+	Primitive->SetNotifyRigidBodyCollision(true);
 	
 }
 
@@ -41,6 +50,25 @@ void UFallingTileComponent::TickComponent(float DeltaTime, ELevelTick TickType, 
 {
 	Super::TickComponent(DeltaTime, TickType, ThisTickFunction);
 
-	// ...
+	//Break if actor is null
+	if (!OwningActor) return;
+
+	if (bShouldFall)
+	{
+		Fall(DeltaTime);
+	}
 }
 
+void UFallingTileComponent::Fall(float DeltaTime)
+{
+	FVector TargetLocation = OwningActor->GetActorLocation();
+	TargetLocation.Z -= DeltaTime * FallSpeed;
+
+
+	OwningActor->SetActorLocation(TargetLocation);
+}
+
+void UFallingTileComponent::OnHit(UPrimitiveComponent* HitComponent, AActor* OtherActor, UPrimitiveComponent* OtherComponent, FVector NormalImpulse, const FHitResult& Hit)
+{
+
+}
