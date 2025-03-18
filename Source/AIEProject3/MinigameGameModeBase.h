@@ -1,0 +1,42 @@
+// Fill out your copyright notice in the Description page of Project Settings.
+
+#pragma once
+
+#include "CoreMinimal.h"
+#include "GameFramework/GameModeBase.h"
+#include "MinigameGameModeBase.generated.h"
+
+/**
+ * 
+ */
+UENUM(BlueprintType)
+enum class FEndMode : uint8 {
+	LASTPLAYER = 0 UMETA(DisplayName = "LASTPLAYER"),
+	TIMER = 1 UMETA(DisplayName = "TIMER"),
+	OBJECTIVE = 2 UMETA(DisplayName = "OBJECTIVE"),
+	OTHER = 255 UMETA(DisplayName = "OTHER")
+};
+
+UCLASS()
+class AIEPROJECT3_API AMinigameGameModeBase : public AGameModeBase
+{
+	GENERATED_BODY()
+
+public:
+	//Constructor
+	AMinigameGameModeBase();
+
+
+	//Called for a player win
+	void PlayerWon(uint8 PlayerNum);
+
+	//Called for the Last Player gamemode
+	void DeclareDeadPlayer(uint8 PlayerNum);
+
+	// Called every frame
+	virtual void Tick(float DeltaTime) override;
+
+protected:
+	UPROPERTY(EditAnywhere, Category="Minigame Config")
+	FEndMode EndMode;
+};
