@@ -24,21 +24,34 @@ public:
 	// Called every frame
 	virtual void TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction) override;
 
+	//Seconds between a player touching the tile, and falling
+	UPROPERTY(EditInstanceOnly)
+	float WaitTime = 1.0f;
+
 	//Controls the units per second the tile falls fore
 	UPROPERTY(EditInstanceOnly)
 	float FallSpeed = 10.0f;
 
+	UFUNCTION()
 	void OnHit(UPrimitiveComponent* HitComponent, AActor* OtherActor, UPrimitiveComponent* OtherComponent, FVector NormalImpulse, const FHitResult& Hit);
 
 private:
 	//Reference to the actor owning this component
 	AActor* OwningActor;
 
+	//When true, a player collision has occured
+	bool bPlayerTouched = false;
+
 	//When true, the platform will start falling
-	bool bShouldFall = true;
+	bool bShouldFall = false;
+
+	//Timer handle for handling time between toouching the tile and the tile falling
+	FTimerHandle FallTimerHandle;
 
 	//Handles falling logic
 	void Fall(float DeltaTime);
 
+	//Runs when the tile should start falling
+	void BeginFall();
 
 };

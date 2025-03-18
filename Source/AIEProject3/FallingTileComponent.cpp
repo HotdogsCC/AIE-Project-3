@@ -2,6 +2,7 @@
 
 
 #include "FallingTileComponent.h"
+#include "GameFramework/Character.h"
 
 // Sets default values for this component's properties
 UFallingTileComponent::UFallingTileComponent()
@@ -41,7 +42,19 @@ void UFallingTileComponent::BeginPlay()
 	
 	//Enables hit events
 	Primitive->SetNotifyRigidBodyCollision(true);
-	
+
+	//Disables gravuty
+	Primitive->SetEnableGravity(false);
+
+	//checks constraints
+	if(!Primitive->BodyInstance.bLockXTranslation)
+	{
+		UE_LOG(LogTemp, Warning, TEXT("Object %s requires all constraints to be locked to be enabled for FallingTile to run."), *OwningActor->GetName());
+		return;
+	}
+
+	Primitive->OnComponentHit.AddDynamic(this, &UFallingTileComponent::OnHit);
+
 }
 
 
@@ -70,5 +83,24 @@ void UFallingTileComponent::Fall(float DeltaTime)
 
 void UFallingTileComponent::OnHit(UPrimitiveComponent* HitComponent, AActor* OtherActor, UPrimitiveComponent* OtherComponent, FVector NormalImpulse, const FHitResult& Hit)
 {
+	//only check if bShouldFall should be true if it is not already true
+	if(!bPlayerTouched)
+	{
+		//checks it is a player touching the actor
+		UE_LOG(LogTemp, Display, TEXT("%s just touched %s"), *this->GetName(), *OtherActor->GetName());
+		ACharacter* MyCharacter = Cast<ACharacter>(OtherActor);
+		if(MyCharacter)
+		{
+			//starts falling
+			UE_LOG(LogTemp, Display, TEXT("%s is a character, beginng fall countdown for %s"), *OtherActor->GetName(), *this->GetName());
+			GetWorld()->GetTimerManager().SetTimer(FallTimerHandle, this, &UFallingTileComponent::BeginFall, WaitTime);
+			bPlayerTouched = true;
+		}
+	}
+}
 
+void UFallingTileComponent::BeginFall()
+{
+	bShouldFall = true;
+	UE_LOG(LogTemp, Display, TEXT("%s is falling"), *this->GetName());
 }
