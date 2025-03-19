@@ -46,6 +46,7 @@ UPopUpUserWidget* AWidgetPopUp::AssignText(UUserWidget* WidgetInstance, int32 Pl
 	return CurrentWidgetInstance[PlayerIndex];
 }
 
+
 void AWidgetPopUp::CreateMyWidget(int32 playerIndex)
 {
 
@@ -78,6 +79,7 @@ void AWidgetPopUp::CreateMyWidget(int32 playerIndex)
 			CastedWidget->AddToPlayerScreen();
 		}
 	}
+	
 }
 
 void AWidgetPopUp::RemoveWidget()

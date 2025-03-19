@@ -2,20 +2,19 @@
 
 #pragma once
 
-#include "CoreMinimal.h" 
+#include "CoreMinimal.h"
 #include "Engine/TriggerVolume.h"
-#include "KillPlayerTriggerVolume.generated.h"
+#include "PlayerWinTriggerVolume.generated.h"
 
 /**
  * 
  */
 UCLASS()
-class AIEPROJECT3_API AKillPlayerTriggerVolume : public ATriggerVolume
+class AIEPROJECT3_API APlayerWinTriggerVolume : public ATriggerVolume
 {
 	GENERATED_BODY()
-
 public:
-	AKillPlayerTriggerVolume();
+	APlayerWinTriggerVolume();
 protected:
 	// Called when the game starts
 	virtual void BeginPlay() override;
