@@ -39,4 +39,7 @@ public:
 protected:
 	UPROPERTY(EditAnywhere, Category="Minigame Config")
 	FEndMode EndMode;
+
+private:
+	bool bIsPlayersAlive[4] = {true, true, true, true};
 };

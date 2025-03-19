@@ -19,15 +19,24 @@ void AKillPlayerTriggerVolume::BeginPlay()
 
 void AKillPlayerTriggerVolume::OnOverlapBegin(AActor* OverlappedActor, AActor* OtherActor)
 {
+    //try to cast the actor in the trigger zone as a player
     ACharacter* Character = Cast<ACharacter>(OtherActor);
 
     if(Character)
     {
+        //cast the minigame mode to the base class with all my cool stuff
         AMinigameGameModeBase* GameMode = Cast<AMinigameGameModeBase>(UGameplayStatics::GetGameMode(this));
         if (GameMode)
         {
-            // Call the function in the Game Mode
-            GameMode->DeclareDeadPlayer(255);
+            //get the player controller
+            APlayerController* PlayerController = Cast<APlayerController>(Character->GetController());
+            if(PlayerController)
+            {
+                // tell the game mode player x died
+                GameMode->DeclareDeadPlayer(PlayerController->GetLocalPlayer()->GetControllerId());
+            }
+            
+            
         }
         else
         {

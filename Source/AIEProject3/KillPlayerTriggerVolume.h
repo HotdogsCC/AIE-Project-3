@@ -2,7 +2,7 @@
 
 #pragma once
 
-#include "CoreMinimal.h"
+#include "CoreMinimal.h" 
 #include "Engine/TriggerVolume.h"
 #include "KillPlayerTriggerVolume.generated.h"
 

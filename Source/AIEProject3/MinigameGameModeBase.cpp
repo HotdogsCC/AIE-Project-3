@@ -22,4 +22,28 @@ void AMinigameGameModeBase::Tick(float DeltaTime)
 void AMinigameGameModeBase::DeclareDeadPlayer(uint8 PlayerNum)
 {
     UE_LOG(LogTemp, Display, TEXT("Player %i died"), PlayerNum);
+	bIsPlayersAlive[PlayerNum] = false;
+
+	//checks to see which player is alive
+	uint8 PlayersAlive = 0;
+	uint8 PlayerIndexAlive = -1;
+	for(uint8 i = 0; i < 4; i++)
+	{
+		//if the player is alive
+		if(bIsPlayersAlive[i])
+		{
+			PlayersAlive++;
+			PlayerIndexAlive = i;
+		}
+	}
+
+	if(PlayersAlive == 1)
+	{
+		PlayerWon(PlayerIndexAlive);
+	}
+}
+
+void AMinigameGameModeBase::PlayerWon(uint8 PlayerNum)
+{
+	UE_LOG(LogTemp, Display, TEXT("Player %i won!"), PlayerNum);
 }
