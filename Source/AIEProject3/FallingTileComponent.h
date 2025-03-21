@@ -35,6 +35,14 @@ public:
 	UFUNCTION()
 	void OnHit(UPrimitiveComponent* HitComponent, AActor* OtherActor, UPrimitiveComponent* OtherComponent, FVector NormalImpulse, const FHitResult& Hit);
 
+	UFUNCTION()
+	void OnOverlapBegin(UPrimitiveComponent* OverlappedComponent,
+		AActor* OtherActor,
+		UPrimitiveComponent* OtherComp,
+		int32 OtherBodyIndex,
+		bool bFromSweep,
+		const FHitResult& SweepResult);
+
 private:
 	//Reference to the actor owning this component
 	AActor* OwningActor;
@@ -53,5 +61,7 @@ private:
 
 	//Runs when the tile should start falling
 	void BeginFall();
+
+	void DoBoxTrace();
 
 };

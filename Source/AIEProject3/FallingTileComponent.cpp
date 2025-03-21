@@ -3,6 +3,7 @@
 
 #include "FallingTileComponent.h"
 #include "GameFramework/Character.h"
+#include "Engine/HitResult.h"
 
 // Sets default values for this component's properties
 UFallingTileComponent::UFallingTileComponent()
@@ -42,6 +43,9 @@ void UFallingTileComponent::BeginPlay()
 	
 	//Enables hit events
 	Primitive->SetNotifyRigidBodyCollision(true);
+	
+	//Enable Overlap events
+	Primitive->SetGenerateOverlapEvents(true);
 
 	//Disables gravuty
 	Primitive->SetEnableGravity(false);
@@ -54,6 +58,7 @@ void UFallingTileComponent::BeginPlay()
 	}
 
 	Primitive->OnComponentHit.AddDynamic(this, &UFallingTileComponent::OnHit);
+	Primitive->OnComponentBeginOverlap.AddDynamic(this, &UFallingTileComponent::OnOverlapBegin);
 
 }
 
@@ -66,9 +71,49 @@ void UFallingTileComponent::TickComponent(float DeltaTime, ELevelTick TickType, 
 	//Break if actor is null
 	if (!OwningActor) return;
 
+	DoBoxTrace();
+
 	if (bShouldFall)
 	{
 		Fall(DeltaTime);
+	}
+}
+
+void UFallingTileComponent::DoBoxTrace()
+{
+	FCollisionQueryParams QueryParams;
+	QueryParams.AddIgnoredActor(GetOwner()); //ignores the owning actor from the trace
+
+	FVector Start = GetOwner()->GetActorLocation();
+	FVector End = Start;
+	End.Z += 100;
+	FVector BoxExtent(90, 90, 90);
+
+	TArray<FHitResult> HitResults;
+	bool bHit = GetWorld()->LineTraceMultiByChannel(
+		HitResults,
+		Start,
+		End,
+		ECC_Visibility,
+		QueryParams
+	);
+
+	DrawDebugLine(GetWorld(), Start, End, FColor::Red, false, 1.0f, 0, 1.f);
+
+	if (bHit)
+	{
+		for (FHitResult& Hit : HitResults)
+		{
+			//try to cast to player
+			ACharacter* MyCharacter = Cast<ACharacter>(Hit.GetActor());
+			if (MyCharacter)
+			{
+				DrawDebugLine(GetWorld(), Start, Hit.ImpactPoint, FColor::Red, false, 1.0f, 0, 1.f);
+				UE_LOG(LogTemp, Display, TEXT("Faling tile %s hit actor %s"), *this->GetName(), *Hit.GetActor()->GetName());
+			}
+			
+		}
+		
 	}
 }
 
@@ -87,7 +132,7 @@ void UFallingTileComponent::OnHit(UPrimitiveComponent* HitComponent, AActor* Oth
 	if(!bPlayerTouched)
 	{
 		//checks it is a player touching the actor
-		UE_LOG(LogTemp, Display, TEXT("%s just touched %s"), *this->GetName(), *OtherActor->GetName());
+		//UE_LOG(LogTemp, Display, TEXT("%s just touched %s"), *this->GetName(), *OtherActor->GetName());
 		ACharacter* MyCharacter = Cast<ACharacter>(OtherActor);
 		if(MyCharacter)
 		{
@@ -97,6 +142,16 @@ void UFallingTileComponent::OnHit(UPrimitiveComponent* HitComponent, AActor* Oth
 			bPlayerTouched = true;
 		}
 	}
+}
+
+void UFallingTileComponent::OnOverlapBegin(UPrimitiveComponent* OverlappedComponent,
+	AActor* OtherActor,
+	UPrimitiveComponent* OtherComp,
+	int32 OtherBodyIndex,
+	bool bFromSweep,
+	const FHitResult& SweepResult)
+{
+	UE_LOG(LogTemp, Display, TEXT(" % s just overlaped with %s"), *this->GetName(), *OtherActor->GetName());
 }
 
 void UFallingTileComponent::BeginFall()
