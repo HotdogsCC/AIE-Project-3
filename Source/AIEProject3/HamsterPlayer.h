@@ -11,6 +11,12 @@ class AIEPROJECT3_API AHamsterPlayer : public APawn
 {
 	GENERATED_BODY()
 
+	//DO NOT USE THIS CLASS
+	//DO NOT USE THIS CLASS
+	//DO NOT USE THIS CLASS
+	//DO NOT USE THIS CLASS
+	//DO NOT USE THIS CLASS
+	
 public:
 	// Sets default values for this pawn's properties
 	AHamsterPlayer();
@@ -22,8 +28,6 @@ protected:
 public:	
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
-
-	// Called to bind functionality to input
-	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
+	
 
 };

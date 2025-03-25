@@ -9,6 +9,13 @@ AHamsterPlayer::AHamsterPlayer()
  	// Set this pawn to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
 
+	//DO NOT USE THIS CLASS
+	//DO NOT USE THIS CLASS
+	//DO NOT USE THIS CLASS
+	//DO NOT USE THIS CLASS
+	//DO NOT USE THIS CLASS
+	//DO NOT USE THIS CLASS
+	
 }
 
 // Called when the game starts or when spawned
@@ -25,10 +32,4 @@ void AHamsterPlayer::Tick(float DeltaTime)
 
 }
 
-// Called to bind functionality to input
-void AHamsterPlayer::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
-{
-	Super::SetupPlayerInputComponent(PlayerInputComponent);
-
-}
 

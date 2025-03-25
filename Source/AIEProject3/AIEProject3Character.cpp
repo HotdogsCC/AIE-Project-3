@@ -10,6 +10,8 @@
 #include "EnhancedInputComponent.h"
 #include "EnhancedInputSubsystems.h"
 #include "InputActionValue.h"
+#include "Components/StaticMeshComponent.h"
+#include "Kismet/GameplayStatics.h"
 
 DEFINE_LOG_CATEGORY(LogTemplateCharacter);
 
@@ -50,6 +52,13 @@ AAIEProject3Character::AAIEProject3Character()
 	FollowCamera->SetupAttachment(CameraBoom, USpringArmComponent::SocketName); // Attach the camera to the end of the boom and let the boom adjust to match the controller orientation
 	FollowCamera->bUsePawnControlRotation = false; // Camera does not rotate relative to arm
 
+	// Create the ball
+	BallComponent = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("HampterBall"));
+	BallComponent->SetupAttachment(RootComponent);
+
+	//set up collision delegate
+	GetCapsuleComponent()->OnComponentBeginOverlap.AddDynamic(this, &AAIEProject3Character::OnOverlapBegin);
+	GetCapsuleComponent()->OnComponentHit.AddDynamic(this, &AAIEProject3Character::NotifyHit);
 	// Note: The skeletal mesh and anim blueprint references on the Mesh component (inherited from Character) 
 	// are set in the derived blueprint asset named ThirdPersonCharacter (to avoid direct content references in C++)
 }
@@ -113,6 +122,18 @@ void AAIEProject3Character::Move(const FInputActionValue& Value)
 		// add movement 
 		AddMovementInput(ForwardDirection, MovementVector.Y);
 		AddMovementInput(RightDirection, MovementVector.X);
+		
+		//UE_LOG(LogTemp, Display, TEXT("%f"),Controller->GetCharacter()->GetVelocity().Length());
+		float RotateDelta = Controller->GetCharacter()->GetVelocity().Length() * -0.573248f * UGameplayStatics::GetWorldDeltaSeconds(this);
+		//UE_LOG(LogTemp, Display, TEXT("%f"),RotateDelta);
+		if(BallComponent != nullptr)
+		{
+			FRotator BallRotation;
+			BallRotation.MakeFromEuler({0.0f, RotateDelta, 0.0f});
+			//Rotate ball mesh
+			BallComponent->AddLocalRotation(BallRotation);
+		}
+		
 	}
 }
 
@@ -127,4 +148,24 @@ void AAIEProject3Character::Look(const FInputActionValue& Value)
 		AddControllerYawInput(LookAxisVector.X);
 		AddControllerPitchInput(LookAxisVector.Y);
 	}
+}
+
+void AAIEProject3Character::OnOverlapBegin(UPrimitiveComponent* OverlappedComp, AActor* OtherActor,
+	UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
+{
+	UE_LOG(LogTemp, Display, TEXT("%s touched %s"), *this->GetName(), *OtherActor->GetName());
+}
+
+void AAIEProject3Character::NotifyHit(UPrimitiveComponent* HitComp, AActor* OtherActor, UPrimitiveComponent* OtherComp, FVector NormalImpulse, const FHitResult& Hit)
+{
+	//try to cast to player
+	if (ACharacter* OtherCharacter = Cast<ACharacter>(OtherActor))
+	{
+		FVector FromOtherToThis = GetActorLocation() - OtherCharacter->GetActorLocation();
+		FromOtherToThis.Normalize();
+		FromOtherToThis *= 5000000.0f;
+
+		GetCharacterMovement()->AddForce(FromOtherToThis);
+	}
+	
 }
