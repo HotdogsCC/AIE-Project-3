@@ -9,12 +9,13 @@ AKillPlayerTriggerVolume::AKillPlayerTriggerVolume()
 {
     //Bind delegates
     OnActorBeginOverlap.AddDynamic(this, &AKillPlayerTriggerVolume::OnOverlapBegin);
+    UE_LOG(LogTemp, Display, TEXT("%s has constructed"), *this->GetHumanReadableName());
 }
 
 void AKillPlayerTriggerVolume::BeginPlay()
 {
     Super::BeginPlay();
-
+    UE_LOG(LogTemp, Display, TEXT("%s has begun"), *this->GetHumanReadableName());
 }
 
 void AKillPlayerTriggerVolume::OnOverlapBegin(AActor* OverlappedActor, AActor* OtherActor)
@@ -39,7 +40,7 @@ void AKillPlayerTriggerVolume::OnOverlapBegin(AActor* OverlappedActor, AActor* O
             UE_LOG(LogTemp, Warning, TEXT("Game Mode not found!"));
         }
 
-        UE_LOG(LogTemp, Display, TEXT("Killing %s"), *Character->GetName());
+        UE_LOG(LogTemp, Display, TEXT("%s just killed %s"), *this->GetName(), *Character->GetName());
         Character->Destroy();
     }
 }
