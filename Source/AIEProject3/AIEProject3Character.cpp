@@ -20,6 +20,8 @@ DEFINE_LOG_CATEGORY(LogTemplateCharacter);
 
 AAIEProject3Character::AAIEProject3Character()
 {
+	PrimaryActorTick.bCanEverTick = true; // Enables ticking
+	
 	// Set size for collision capsule
 	GetCapsuleComponent()->InitCapsuleSize(42.f, 96.0f);
 		
@@ -67,6 +69,16 @@ void AAIEProject3Character::BeginPlay()
 {
 	// Call the base class  
 	Super::BeginPlay();
+}
+
+void AAIEProject3Character::Tick(float DeltaTime)
+{
+	//very awful code but IDK how else to do it
+	if(GetCapsuleComponent())
+	{
+		GetCapsuleComponent()->WakeRigidBody();
+	}
+	
 }
 
 //////////////////////////////////////////////////////////////////////////
@@ -150,22 +162,49 @@ void AAIEProject3Character::Look(const FInputActionValue& Value)
 	}
 }
 
+//deprecated
 void AAIEProject3Character::OnOverlapBegin(UPrimitiveComponent* OverlappedComp, AActor* OtherActor,
 	UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
 {
-	UE_LOG(LogTemp, Display, TEXT("%s touched %s"), *this->GetName(), *OtherActor->GetName());
+	//UE_LOG(LogTemp, Display, TEXT("%s touched %s"), *this->GetName(), *OtherActor->GetName());
 }
 
 void AAIEProject3Character::NotifyHit(UPrimitiveComponent* HitComp, AActor* OtherActor, UPrimitiveComponent* OtherComp, FVector NormalImpulse, const FHitResult& Hit)
 {
 	//try to cast to player
-	if (ACharacter* OtherCharacter = Cast<ACharacter>(OtherActor))
+	AAIEProject3Character* OtherCharacter = Cast<AAIEProject3Character>(OtherActor);
+	if (OtherCharacter && bShouldBounce)
 	{
+		//make sure we don't bounce for a little bit
+		//i.e. prevent infinite loop
+		bShouldBounce = false;
+
+		//reset bShouldBounce to true in 0.1 secs
+		GetWorld()->GetTimerManager().SetTimer(
+			BounceResetTimer, this, &AAIEProject3Character::ResetBounce, 0.1f);
+
+		//calc a force for bounce
 		FVector FromOtherToThis = GetActorLocation() - OtherCharacter->GetActorLocation();
 		FromOtherToThis.Normalize();
-		FromOtherToThis *= 5000000.0f;
+		FromOtherToThis *= 1000000.0f;
+		FromOtherToThis *= Bounciness;
 
+		//set force on this
 		GetCharacterMovement()->AddForce(FromOtherToThis);
+
+		//sometimes unreal engine is a piece of shit and decides it doesn't want to
+		//say that there was a collision for the other actor.
+		//in this case, we will manually do it
+		if(OtherCharacter->GetShouldBounce())
+		{
+			OtherCharacter->NotifyHit(HitComp, this, nullptr, NormalImpulse, Hit);
+		}
 	}
 	
 }
+
+void AAIEProject3Character::ResetBounce()
+{
+	bShouldBounce = true;
+}
+
