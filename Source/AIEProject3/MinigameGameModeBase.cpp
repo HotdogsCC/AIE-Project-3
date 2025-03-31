@@ -6,7 +6,7 @@
 #include "PopUpUserWidget.h"
 #include "Blueprint/UserWidget.h"
 #include "Kismet/GameplayStatics.h"
-
+#include "AIEProject3Character.h"
 
 AMinigameGameModeBase::AMinigameGameModeBase()
 {
@@ -95,4 +95,15 @@ void AMinigameGameModeBase::DeclareDeadPlayer(uint8 PlayerNum)
 void AMinigameGameModeBase::PlayerWon(uint8 PlayerNum)
 {
 	UE_LOG(LogTemp, Display, TEXT("Player %i won!"), PlayerNum);
+}
+
+//When two players collide, can be overrided for specific functionality in minigames
+void AMinigameGameModeBase::PlayerCollision(AAIEProject3Character* Character1, AAIEProject3Character* Character2)
+{
+	if (!Character1 || !Character2)
+	{
+		UE_LOG(LogTemp, Warning, TEXT("Null pointer for characters in MinigameGameModeBase PlayerCollision"));
+		return;
+	}
+	UE_LOG(LogTemp, Display, TEXT("Temp YIPPEE MinigameGameModeBase PlayerCollision"));
 }

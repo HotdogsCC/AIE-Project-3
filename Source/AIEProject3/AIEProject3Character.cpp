@@ -12,6 +12,7 @@
 #include "InputActionValue.h"
 #include "Components/StaticMeshComponent.h"
 #include "Kismet/GameplayStatics.h"
+#include "MinigameGameModeBase.h"
 
 DEFINE_LOG_CATEGORY(LogTemplateCharacter);
 
@@ -198,6 +199,31 @@ void AAIEProject3Character::NotifyHit(UPrimitiveComponent* HitComp, AActor* Othe
 		if(OtherCharacter->GetShouldBounce())
 		{
 			OtherCharacter->NotifyHit(HitComp, this, nullptr, NormalImpulse, Hit);
+		}
+		//if this else condition triggers, it means that both characters have successfully processed
+		//their collision! yippee!
+		//in this case, we need to let the game mode know that a collision occured
+		else
+		{
+			//get the game mode
+			AGameModeBase* GameModeBase = UGameplayStatics::GetGameMode(this);
+			if (!GameModeBase)
+			{
+				UE_LOG(LogTemp, Warning, TEXT("Game Mode not found for AIEProject3Character NotifyHit()"));
+				return;
+			}
+
+			//turn it into a minigame game mode
+			AMinigameGameModeBase* MinigameGameMode = Cast<AMinigameGameModeBase>(GameModeBase);
+			if (!MinigameGameMode)
+			{
+				UE_LOG(LogTemp, Warning, TEXT("Minigame Game Mode not found for AIEProject3Character NotifyHit()"));
+				return;
+			}
+
+			//tell the minigame a collision occured
+			MinigameGameMode->PlayerCollision(this, OtherCharacter);
+			
 		}
 	}
 	

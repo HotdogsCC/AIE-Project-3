@@ -125,7 +125,7 @@ void UFallingTileComponent::Fall(float DeltaTime)
 {
 	FVector TargetLocation = OwningActor->GetActorLocation();
 	
-	switch(FallMode)
+	switch(ChosenFallMode)
 	{
 	case EFallMode::Acceleration:
 		TargetLocation.Z -= DeltaTime * InitialFallSpeed;
