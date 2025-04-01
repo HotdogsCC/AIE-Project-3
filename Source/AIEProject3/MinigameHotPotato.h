@@ -26,6 +26,10 @@ public:
 	UPROPERTY(EditDefaultsOnly)
 	TSubclassOf<ATextRenderActor> TaggedTextBlueprint;
 
+	//blood
+	UPROPERTY(EditDefaultsOnly)
+	TSubclassOf<AActor> Blood;
+
 	AActor* TaggedTextActor;
 	
 

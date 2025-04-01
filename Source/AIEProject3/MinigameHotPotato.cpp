@@ -59,7 +59,6 @@ void AMinigameHotPotato::AssignTagged()
 		return;
 	}
 	
-	UE_LOG(LogTemp, Display, TEXT("tagged player %s"), *TaggedPlayer->GetName())
 }
 
 void AMinigameHotPotato::Tick(float DeltaTime)
@@ -70,8 +69,35 @@ void AMinigameHotPotato::Tick(float DeltaTime)
 		return;
 	}
 
+	//updates timer (found in parent)
+	UpdateTimer(DeltaTime);
+
+	//sets tagged text position
 	const FVector PlayerLocation = TaggedPlayer->GetActorLocation();
 	TaggedTextActor->SetActorLocation(PlayerLocation);
+
+	//checks if time has run out
+	if(TimeLimit <= 0)
+	{
+		// tell the game mode the tagged player died
+		AController* Controller = TaggedPlayer->GetController();
+		APlayerController* PlayerController = Cast<APlayerController>(Controller);
+		DeclareDeadPlayer(PlayerController->GetLocalPlayer()->GetControllerId());
+		
+		//kill the tagged player
+		TaggedPlayer->Destroy();
+		TaggedPlayer = nullptr;
+
+		//spawn blood
+		if(Blood)
+		{
+			GetWorld()->SpawnActor(Blood, &PlayerLocation);
+		}
+
+		//tell the tagged text actor to fuck off
+		FVector MiddleOfNowhere(0.0f, 0.0f, -99999.0f);
+		TaggedTextActor->SetActorLocation(MiddleOfNowhere);
+	}
 	
 }
 

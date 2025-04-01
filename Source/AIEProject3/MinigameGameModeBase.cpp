@@ -20,17 +20,22 @@ PrimaryActorTick.bCanEverTick = true;
 void AMinigameGameModeBase::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
-
-    if(bTimerOn)
-    {
-    	TimeLimit -= DeltaTime;
-    	if(TimeLimit <= 0)
-    	{
-    		UE_LOG(LogTemp, Display, TEXT("Ran out of time, Game Over!"));
-    	}
-	    PopUpWidgetInstance->SetText(FString::FromInt(FMath::CeilToInt(TimeLimit)));
-    }
+	UpdateTimer(DeltaTime);
 }
+
+void AMinigameGameModeBase::UpdateTimer(float DeltaTime)
+{
+	if(bTimerOn)
+	{
+		TimeLimit -= DeltaTime;
+		if(TimeLimit <= 0)
+		{
+			TimeLimit = 0;
+		}
+		PopUpWidgetInstance->SetText(FString::FromInt(FMath::CeilToInt(TimeLimit)));
+	}
+}
+
 
 void AMinigameGameModeBase::BeginPlay()
 {
@@ -85,10 +90,6 @@ void AMinigameGameModeBase::DeclareDeadPlayer(uint8 PlayerNum)
 			//they won!
 			PlayerWon(PlayerIndexAlive);
 		}
-	}
-	else
-	{
-		UE_LOG(LogTemp, Warning, TEXT("You killed a player, but the game mode isn't set to 'LASTPLAYER'. Was this a mistake?"));
 	}
 	
 }

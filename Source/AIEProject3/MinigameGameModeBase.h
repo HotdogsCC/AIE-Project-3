@@ -48,6 +48,8 @@ public:
 protected:
 	// Called when the game starts
 	virtual void BeginPlay() override;
+
+	void UpdateTimer(float DeltaTime);
 	
 	UPROPERTY(EditAnywhere, Category="Minigame Config")
 	FEndMode EndMode;
