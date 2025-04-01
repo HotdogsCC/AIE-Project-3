@@ -28,11 +28,6 @@ void APipeTravel::StartTravelling(AActor* InCharacter)
 	bIsTravelling = true;
 	Player = InCharacter;
 	targIndex = 0;
-
-	for (ATargetPoint* Target : Targets)
-	{
-		UE_LOG(LogTemp, Display, TEXT("Target: %s"), *Target->GetActorLocation().ToString())
-	}
 }
 
 void APipeTravel::Travel(float DeltaTime)

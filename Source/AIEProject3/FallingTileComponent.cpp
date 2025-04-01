@@ -115,7 +115,6 @@ void UFallingTileComponent::DoBoxTrace()
 			}
 			
 			bPlayerTouched = true;
-			UE_LOG(LogTemp, Display, TEXT("Faling tile %s has actor %s in radius"), *this->GetName(), *HitResult.GetActor()->GetName());
 		}
 		
 	}
@@ -125,7 +124,7 @@ void UFallingTileComponent::Fall(float DeltaTime)
 {
 	FVector TargetLocation = OwningActor->GetActorLocation();
 	
-	switch(FallMode)
+	switch(ChosenFallMode)
 	{
 	case EFallMode::Acceleration:
 		TargetLocation.Z -= DeltaTime * InitialFallSpeed;
@@ -148,11 +147,10 @@ void UFallingTileComponent::OnOverlapBegin(UPrimitiveComponent* OverlappedCompon
 	bool bFromSweep,
 	const FHitResult& SweepResult)
 {
-	UE_LOG(LogTemp, Display, TEXT(" % s just overlaped with %s"), *this->GetName(), *OtherActor->GetName());
+	//deprecated
 }
 
 void UFallingTileComponent::BeginFall()
 {
 	bShouldFall = true;
-	UE_LOG(LogTemp, Display, TEXT("%s is falling"), *this->GetName());
 }

@@ -5,6 +5,7 @@
 #include "CoreMinimal.h"
 #include "GameFramework/GameModeBase.h"
 #include "MinigameGameModeBase.generated.h"
+class AAIEProject3Character; // cheeky forward declare
 
 /**
  * 
@@ -32,6 +33,9 @@ public:
 	//Called for the Last Player gamemode
 	void DeclareDeadPlayer(uint8 PlayerNum);
 
+	///Called when two players collide
+	virtual void PlayerCollision(AAIEProject3Character* Character1, AAIEProject3Character* Character2);
+
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
 
@@ -44,6 +48,8 @@ public:
 protected:
 	// Called when the game starts
 	virtual void BeginPlay() override;
+
+	void UpdateTimer(float DeltaTime);
 	
 	UPROPERTY(EditAnywhere, Category="Minigame Config")
 	FEndMode EndMode;

@@ -6,7 +6,7 @@
 #include "PopUpUserWidget.h"
 #include "Blueprint/UserWidget.h"
 #include "Kismet/GameplayStatics.h"
-
+#include "AIEProject3Character.h"
 
 AMinigameGameModeBase::AMinigameGameModeBase()
 {
@@ -20,22 +20,27 @@ PrimaryActorTick.bCanEverTick = true;
 void AMinigameGameModeBase::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
-
-    if(bTimerOn)
-    {
-    	TimeLimit -= DeltaTime;
-    	if(TimeLimit <= 0)
-    	{
-    		UE_LOG(LogTemp, Display, TEXT("Ran out of time, Game Over!"));
-    	}
-	    PopUpWidgetInstance->SetText(FString::FromInt(FMath::CeilToInt(TimeLimit)));
-    }
+	UpdateTimer(DeltaTime);
 }
+
+void AMinigameGameModeBase::UpdateTimer(float DeltaTime)
+{
+	if(bTimerOn)
+	{
+		TimeLimit -= DeltaTime;
+		if(TimeLimit <= 0)
+		{
+			TimeLimit = 0;
+		}
+		PopUpWidgetInstance->SetText(FString::FromInt(FMath::CeilToInt(TimeLimit)));
+	}
+}
+
 
 void AMinigameGameModeBase::BeginPlay()
 {
 	Super::BeginPlay();
-
+	
 	if(EndMode == FEndMode::TIMER)
 	{
 		if(!TimerWidget)
@@ -57,6 +62,7 @@ void AMinigameGameModeBase::BeginPlay()
 		bTimerOn = true;
 	}
 }
+
 
 void AMinigameGameModeBase::DeclareDeadPlayer(uint8 PlayerNum)
 {
@@ -85,14 +91,21 @@ void AMinigameGameModeBase::DeclareDeadPlayer(uint8 PlayerNum)
 			PlayerWon(PlayerIndexAlive);
 		}
 	}
-	else
-	{
-		UE_LOG(LogTemp, Warning, TEXT("You killed a player, but the game mode isn't set to 'LASTPLAYER'. Was this a mistake?"));
-	}
 	
 }
 
 void AMinigameGameModeBase::PlayerWon(uint8 PlayerNum)
 {
 	UE_LOG(LogTemp, Display, TEXT("Player %i won!"), PlayerNum);
+}
+
+//When two players collide, can be overrided for specific functionality in minigames
+void AMinigameGameModeBase::PlayerCollision(AAIEProject3Character* Character1, AAIEProject3Character* Character2)
+{
+	if (!Character1 || !Character2)
+	{
+		UE_LOG(LogTemp, Warning, TEXT("Null pointer for characters in MinigameGameModeBase PlayerCollision"));
+		return;
+	}
+	UE_LOG(LogTemp, Display, TEXT("Temp YIPPEE MinigameGameModeBase PlayerCollision"));
 }

@@ -37,7 +37,7 @@ public:
 	float WaitTime = 1.0f;
 
 	UPROPERTY(EditInstanceOnly, Category="Important")
-	EFallMode FallMode = EFallMode::ConstantSpeed;
+	EFallMode ChosenFallMode = EFallMode::ConstantSpeed;
 	
 	//Controls the units per second the tile falls fore
 	UPROPERTY(EditInstanceOnly, Category="Constant Speed")
