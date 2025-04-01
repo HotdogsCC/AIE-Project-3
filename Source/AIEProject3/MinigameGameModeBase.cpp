@@ -35,7 +35,7 @@ void AMinigameGameModeBase::Tick(float DeltaTime)
 void AMinigameGameModeBase::BeginPlay()
 {
 	Super::BeginPlay();
-
+	
 	if(EndMode == FEndMode::TIMER)
 	{
 		if(!TimerWidget)
@@ -57,6 +57,7 @@ void AMinigameGameModeBase::BeginPlay()
 		bTimerOn = true;
 	}
 }
+
 
 void AMinigameGameModeBase::DeclareDeadPlayer(uint8 PlayerNum)
 {
