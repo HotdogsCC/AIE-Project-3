@@ -64,7 +64,18 @@ void UFallingTileComponent::TickComponent(float DeltaTime, ELevelTick TickType, 
 
 	if(!bPlayerTouched)
 	{
-		DoBoxTrace();
+		switch (ChosenCollisionDetection)
+		{
+		case ECollisionDetectionMode::SphereTrigger:
+			DoSphereTrace();
+			break;
+
+		case ECollisionDetectionMode::BoxTrigger:
+			DoBoxTrace();
+			break;
+		}
+
+		
 	}
 	
 
@@ -74,14 +85,16 @@ void UFallingTileComponent::TickComponent(float DeltaTime, ELevelTick TickType, 
 	}
 }
 
-void UFallingTileComponent::DoBoxTrace()
+void UFallingTileComponent::DoSphereTrace()
 {
 	FCollisionQueryParams QueryParams;
 	QueryParams.AddIgnoredActor(GetOwner()); //ignores the owning actor from the trace
 
+	//get position
 	FVector Start = GetOwner()->GetActorLocation();
 	Start.Z += CollisionCenterOffset;
-	
+
+	//do the sphere trace
 	FHitResult HitResult;
 	bool bHit = GetWorld()->SweepSingleByChannel(
 		HitResult,
@@ -93,19 +106,19 @@ void UFallingTileComponent::DoBoxTrace()
 		QueryParams
 	);
 
-	if(bDebugMode)
+	//draw the sphere if in debug mode
+	if (bDebugMode)
 	{
 		DrawDebugSphere(GetWorld(), Start, CollisionSphereRadius, 12, FColor::Red);
 	}
-	
-	DrawDebugLine(GetWorld(), Start, Start, FColor::Red, false, 1.0f, 0, 1.f);
 
+	//if the sphere cast touched something
 	if (bHit)
 	{
 		//try to cast to player
 		if (ACharacter* MyCharacter = Cast<ACharacter>(HitResult.GetActor()))
 		{
-			if(WaitTime == 0)
+			if (WaitTime == 0)
 			{
 				BeginFall();
 			}
@@ -113,11 +126,35 @@ void UFallingTileComponent::DoBoxTrace()
 			{
 				GetWorld()->GetTimerManager().SetTimer(FallTimerHandle, this, &UFallingTileComponent::BeginFall, WaitTime);
 			}
-			
+
 			bPlayerTouched = true;
 		}
-		
+
 	}
+}
+
+void UFallingTileComponent::DoBoxTrace()
+{
+	FCollisionQueryParams QueryParams;
+	QueryParams.AddIgnoredActor(GetOwner()); //ignores the owning actor from the trace
+
+	//get position
+	FVector Start = GetOwner()->GetActorLocation();
+	
+	//make the box
+	FCollisionShape BoxShape = FCollisionShape::MakeBox(HalfDimensions);
+
+	//do the sphere trace
+	FHitResult HitResult;
+	bool bHit = GetWorld()->SweepSingleByChannel(
+		HitResult,
+		Start,
+		Start,
+		FQuat::Identity,
+		ECC_GameTraceChannel1,
+		FCollisionShape::MakeSphere(CollisionSphereRadius),
+		QueryParams
+	);
 }
 
 void UFallingTileComponent::Fall(float DeltaTime)

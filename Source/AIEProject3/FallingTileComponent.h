@@ -11,6 +11,13 @@ enum class EFallMode : uint8 {
 	ConstantSpeed = 0 UMETA(DisplayName = "Constant Speed"),
 	Acceleration = 1 UMETA(DisplayName = "Acceleration")
 };
+
+UENUM(BlueprintType)
+enum class ECollisionDetectionMode : uint8 {
+	SphereTrigger = 0 UMETA(DisplayName = "Sphere Trigger"),
+	BoxTrigger = 1 UMETA(DisplayName = "Box Trigger")
+};
+
 UCLASS( ClassGroup=(Custom), meta=(BlueprintSpawnableComponent) )
 class AIEPROJECT3_API UFallingTileComponent : public UActorComponent
 {
@@ -36,8 +43,13 @@ public:
 	UPROPERTY(EditInstanceOnly, Category="Important")
 	float WaitTime = 1.0f;
 
+	//decides whether it should fall constant or accelerate
 	UPROPERTY(EditInstanceOnly, Category="Important")
 	EFallMode ChosenFallMode = EFallMode::ConstantSpeed;
+
+	//decides how the player cast is done
+	UPROPERTY(EditInstanceOnly, Category = "Important")
+	ECollisionDetectionMode ChosenCollisionDetection = ECollisionDetectionMode::SphereTrigger;
 	
 	//Controls the units per second the tile falls fore
 	UPROPERTY(EditInstanceOnly, Category="Constant Speed")
@@ -54,8 +66,12 @@ public:
 	float CollisionCenterOffset = 50.0f;
 
 	//The radius of the collision zone check
-	UPROPERTY(EditInstanceOnly, Category="Important")
+	UPROPERTY(EditInstanceOnly, Category="Sphere Trigger")
 	float CollisionSphereRadius = 40.0f;
+
+	//the perimeter of the x component
+	UPROPERTY(EditInstanceOnly, Category="Box Trigger")
+	FVector HalfDimensions = { 40.0f, 40.0f, 40.0f, };
 	
 	UFUNCTION()
 	void OnOverlapBegin(UPrimitiveComponent* OverlappedComponent,
@@ -84,6 +100,10 @@ private:
 	//Runs when the tile should start falling
 	void BeginFall();
 
+	//runs a box trace
 	void DoBoxTrace();
+
+	//runs a sphere trace
+	void DoSphereTrace();
 
 };
