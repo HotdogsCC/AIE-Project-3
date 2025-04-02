@@ -12,7 +12,15 @@ UFallingTileComponent::UFallingTileComponent()
 	// off to improve performance if you don't need them.
 	PrimaryComponentTick.bCanEverTick = true;
 
-	// ...
+	DrawDebugBox();
+}
+
+UFallingTileComponent::~UFallingTileComponent()
+{
+	if(GetWorld())
+	{
+		FlushPersistentDebugLines(GetWorld());
+	}
 }
 
 
@@ -74,15 +82,19 @@ void UFallingTileComponent::TickComponent(float DeltaTime, ELevelTick TickType, 
 			DoBoxTrace();
 			break;
 		}
-
-		
 	}
-	
 
 	if (bShouldFall)
 	{
 		Fall(DeltaTime);
 	}
+}
+
+void UFallingTileComponent::PostEditChangeProperty(FPropertyChangedEvent& PropertyChangedEvent)
+{
+	Super::PostEditChangeProperty(PropertyChangedEvent);
+	
+	DrawDebugBox();
 }
 
 void UFallingTileComponent::DoSphereTrace()
@@ -131,6 +143,96 @@ void UFallingTileComponent::DoSphereTrace()
 		}
 
 	}
+
+	
+}
+
+void UFallingTileComponent::DrawDebugBox()
+{
+	//gets rid of the old lines
+	FlushPersistentDebugLines(GetWorld());
+
+	//check we want to see those stupid ass lines
+	if (bDebugMode)
+	{
+		//check we are actually in the world
+		//or unreal engine will fucking crash before you even load
+		//stupid fucking ass engine bitch
+		if(GetOwner() && GetWorld())
+		{
+			//centre of the box
+			FVector Start = GetOwner()->GetActorLocation();
+			Start.Z += CollisionCenterOffset;
+
+			//have two corners to reuse because we love saving memory yippee
+			FVector Corner1;
+			FVector Corner2;
+			
+			//draw bottom of box
+			Corner1 = {HalfDimensions.X, HalfDimensions.Y, -HalfDimensions.Z};
+			Corner1 += Start;
+			Corner2 = {-HalfDimensions.X, HalfDimensions.Y, -HalfDimensions.Z};
+			Corner2 += Start;
+			DrawDebugLine(GetWorld(), Corner1, Corner2, FColor::Red, true);
+
+			Corner1 = {-HalfDimensions.X, -HalfDimensions.Y, -HalfDimensions.Z};
+			Corner1 += Start;
+			DrawDebugLine(GetWorld(), Corner1, Corner2, FColor::Red, true);
+
+			Corner2 = {HalfDimensions.X, -HalfDimensions.Y, -HalfDimensions.Z};
+			Corner2 += Start;
+			DrawDebugLine(GetWorld(), Corner1, Corner2, FColor::Red, true);
+
+			Corner1 = {HalfDimensions.X, HalfDimensions.Y, -HalfDimensions.Z};
+			Corner1 += Start;
+			DrawDebugLine(GetWorld(), Corner1, Corner2, FColor::Red, true);
+
+			//draw top of box
+			Corner1 = {HalfDimensions.X, HalfDimensions.Y, HalfDimensions.Z};
+			Corner1 += Start;
+			Corner2 = {-HalfDimensions.X, HalfDimensions.Y, HalfDimensions.Z};
+			Corner2 += Start;
+			DrawDebugLine(GetWorld(), Corner1, Corner2, FColor::Red, true);
+
+			Corner1 = {-HalfDimensions.X, -HalfDimensions.Y, HalfDimensions.Z};
+			Corner1 += Start;
+			DrawDebugLine(GetWorld(), Corner1, Corner2, FColor::Red, true);
+
+			Corner2 = {HalfDimensions.X, -HalfDimensions.Y, HalfDimensions.Z};
+			Corner2 += Start;
+			DrawDebugLine(GetWorld(), Corner1, Corner2, FColor::Red, true);
+
+			Corner1 = {HalfDimensions.X, HalfDimensions.Y, HalfDimensions.Z};
+			Corner1 += Start;
+			DrawDebugLine(GetWorld(), Corner1, Corner2, FColor::Red, true);
+
+			//draw side of box
+			Corner1 = {HalfDimensions.X, HalfDimensions.Y, HalfDimensions.Z};
+			Corner1 += Start;
+			Corner2 = {HalfDimensions.X, HalfDimensions.Y, -HalfDimensions.Z};
+			Corner2 += Start;
+			DrawDebugLine(GetWorld(), Corner1, Corner2, FColor::Red, true);
+			
+			Corner1 = {-HalfDimensions.X, HalfDimensions.Y, HalfDimensions.Z};
+			Corner1 += Start;
+			Corner2 = {-HalfDimensions.X, HalfDimensions.Y, -HalfDimensions.Z};
+			Corner2 += Start;
+			DrawDebugLine(GetWorld(), Corner1, Corner2, FColor::Red, true);
+
+			Corner1 = {-HalfDimensions.X, -HalfDimensions.Y, HalfDimensions.Z};
+			Corner1 += Start;
+			Corner2 = {-HalfDimensions.X, -HalfDimensions.Y, -HalfDimensions.Z};
+			Corner2 += Start;
+			DrawDebugLine(GetWorld(), Corner1, Corner2, FColor::Red, true);
+
+			Corner1 = {HalfDimensions.X, -HalfDimensions.Y, HalfDimensions.Z};
+			Corner1 += Start;
+			Corner2 = {HalfDimensions.X, -HalfDimensions.Y, -HalfDimensions.Z};
+			Corner2 += Start;
+			DrawDebugLine(GetWorld(), Corner1, Corner2, FColor::Red, true);
+		}
+		
+	}
 }
 
 void UFallingTileComponent::DoBoxTrace()
@@ -140,11 +242,12 @@ void UFallingTileComponent::DoBoxTrace()
 
 	//get position
 	FVector Start = GetOwner()->GetActorLocation();
+	Start.Z += CollisionCenterOffset;
 	
 	//make the box
 	FCollisionShape BoxShape = FCollisionShape::MakeBox(HalfDimensions);
 
-	//do the sphere trace
+	//do the box trace
 	FHitResult HitResult;
 	bool bHit = GetWorld()->SweepSingleByChannel(
 		HitResult,
@@ -152,9 +255,29 @@ void UFallingTileComponent::DoBoxTrace()
 		Start,
 		FQuat::Identity,
 		ECC_GameTraceChannel1,
-		FCollisionShape::MakeSphere(CollisionSphereRadius),
+		BoxShape,
 		QueryParams
 	);
+
+	//if the sphere cast touched something
+	if (bHit)
+	{
+		//try to cast to player
+		if (ACharacter* MyCharacter = Cast<ACharacter>(HitResult.GetActor()))
+		{
+			if (WaitTime == 0)
+			{
+				BeginFall();
+			}
+			else
+			{
+				GetWorld()->GetTimerManager().SetTimer(FallTimerHandle, this, &UFallingTileComponent::BeginFall, WaitTime);
+			}
+
+			bPlayerTouched = true;
+		}
+
+	}
 }
 
 void UFallingTileComponent::Fall(float DeltaTime)

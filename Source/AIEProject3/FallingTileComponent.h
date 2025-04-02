@@ -26,6 +26,7 @@ class AIEPROJECT3_API UFallingTileComponent : public UActorComponent
 public:	
 	// Sets default values for this component's properties
 	UFallingTileComponent();
+	~UFallingTileComponent();
 
 protected:
 	// Called when the game starts
@@ -34,6 +35,9 @@ protected:
 public:	
 	// Called every frame
 	virtual void TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction) override;
+
+	// Called when value changes in the editor
+	virtual void PostEditChangeProperty(FPropertyChangedEvent& PropertyChangedEvent) override;
 
 	//When enabled, shows debug lines for the collision zone
 	UPROPERTY(EditInstanceOnly, Category="Debugging")
@@ -105,5 +109,8 @@ private:
 
 	//runs a sphere trace
 	void DoSphereTrace();
+
+	//draws a debug box
+	void DrawDebugBox();
 
 };
