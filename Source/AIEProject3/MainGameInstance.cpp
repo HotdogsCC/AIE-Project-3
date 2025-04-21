@@ -26,6 +26,7 @@ void UMainGameInstance::PrintLevelArray()
 	}
 }
 
+//Loads a random minigame
 void UMainGameInstance::LoadRandomMinigame()
 {
 	if(LevelNames.Num() <= 0)
@@ -44,4 +45,52 @@ void UMainGameInstance::LoadRandomMinigame()
 		UGameplayStatics::OpenLevel(this, FName(*RandLevel));
 	}
 }
+
+//Runs when a player joins from the lobby
+void UMainGameInstance::PlayerJoined(uint8 PlayerNum)
+{
+	PlayersJoined[PlayerNum] = true;
+	//assumes game can start until proven otherwise
+	bool CanStart = true;
+	for(uint8 i = 0; i < 4; i++)
+	{
+		if(PlayersJoined[i] == false)
+		{
+			CanStart = false;
+			break;
+		}
+	}
+	//GameReadyToStart is a member variable, CanStart is a temp variable
+	GameReadyToStart = CanStart;
+
+	UE_LOG(LogTemp, Display, TEXT("Player %i joined"), PlayerNum);
+	
+}
+
+void UMainGameInstance::EnableSplitscreen()
+{
+	if (!GetWorld()->GetGameViewport())
+	{
+		UE_LOG(LogTemp, Warning, TEXT("Failed to enable splitscreen: GameViewport not available"));
+		return;
+	}
+    
+	// Enable splitscreen
+	GetWorld()->GetGameViewport()->SetForceDisableSplitscreen(false);
+}
+
+void UMainGameInstance::DisableSplitscreen()
+{
+	if (!GetWorld()->GetGameViewport())
+	{
+		UE_LOG(LogTemp, Warning, TEXT("Failed to disable splitscreen: GameViewport not available"));
+		return;
+	}
+    
+	// Enable splitscreen
+	GetWorld()->GetGameViewport()->SetForceDisableSplitscreen(true);
+}
+
+
+
 

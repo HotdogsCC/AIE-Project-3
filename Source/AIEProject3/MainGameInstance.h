@@ -28,6 +28,17 @@ public:
 
 	UFUNCTION(BlueprintCallable)
 	void LoadRandomMinigame();
+
+	UFUNCTION(BlueprintCallable)
+	void PlayerJoined(uint8 PlayerNum);
+
+	UFUNCTION(BlueprintCallable)
+	void EnableSplitscreen();
+	
+	UFUNCTION(BlueprintCallable)
+	void DisableSplitscreen();
+
+
 private:
 	UPROPERTY()
 	TArray<FString> LevelNames =
@@ -46,5 +57,7 @@ private:
 	
 	UPROPERTY()
 	uint8 PlayerWins[4] = {0, 0, 0, 0};
-	
+	bool PlayersJoined[4] = {false, false, false, false};
+	//Becomes true when all players have joined
+	bool GameReadyToStart = false;
 };
