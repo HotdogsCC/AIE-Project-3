@@ -58,8 +58,6 @@ void AUIController::SetupPlayerInputComponent(UInputComponent* PlayerInputCompon
 
 void AUIController::Select()
 {
-	UE_LOG(LogTemp, Display, TEXT("Joined"));
-
 	if(!GetWorld()) return;
 	
 	UMainGameInstance* GameInstance = Cast<UMainGameInstance>(GetWorld()->GetGameInstance());

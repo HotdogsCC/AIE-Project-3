@@ -6,6 +6,9 @@
 #include "GameFramework/Pawn.h"
 #include "UIController.generated.h"
 
+class UInputMappingContext;
+class UInputAction;
+
 UCLASS()
 class AIEPROJECT3_API AUIController : public APawn
 {
