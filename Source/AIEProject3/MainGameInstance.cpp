@@ -92,5 +92,12 @@ void UMainGameInstance::DisableSplitscreen()
 }
 
 
+bool UMainGameInstance::IsPlayerAlive(uint8 PlayerNumber)
+{
+	return bIsPlayersAlive[PlayerNumber];
+}
 
-
+void UMainGameInstance::SetIsPlayerAlive(uint8 PlayerNumber, bool status)
+{
+	bIsPlayersAlive[PlayerNumber] = status;
+}

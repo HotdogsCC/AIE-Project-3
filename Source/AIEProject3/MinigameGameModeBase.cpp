@@ -7,6 +7,7 @@
 #include "Blueprint/UserWidget.h"
 #include "Kismet/GameplayStatics.h"
 #include "AIEProject3Character.h"
+#include "MainGameInstance.h"
 
 AMinigameGameModeBase::AMinigameGameModeBase()
 {
@@ -41,6 +42,8 @@ void AMinigameGameModeBase::BeginPlay()
 {
 	Super::BeginPlay();
 	
+	InitTimeLimit = TimeLimit;
+
 	if(EndMode == FEndMode::TIMER)
 	{
 		if(!TimerWidget)
@@ -63,11 +66,30 @@ void AMinigameGameModeBase::BeginPlay()
 	}
 }
 
+int AMinigameGameModeBase::GetPlayersAlive()
+{
+	uint8 PlayersAlive = 0;
+	for(uint8 i = 0; i < 4; i++)
+	{
+		
+		//checks if player i is alive
+		UMainGameInstance* GameInstance = Cast<UMainGameInstance>(GetGameInstance());
+		if(GameInstance->IsPlayerAlive(i))
+		{
+			PlayersAlive++;
+		}
+	}
+
+	return PlayersAlive;
+}
 
 void AMinigameGameModeBase::DeclareDeadPlayer(uint8 PlayerNum)
 {
     UE_LOG(LogTemp, Display, TEXT("Player %i died"), PlayerNum);
-	bIsPlayersAlive[PlayerNum] = false;
+	
+	
+	UMainGameInstance* GameInstance = Cast<UMainGameInstance>(GetGameInstance());
+	GameInstance->SetIsPlayerAlive(PlayerNum, false);
 
 	if(EndMode == FEndMode::LASTPLAYER)
 	{
@@ -77,7 +99,7 @@ void AMinigameGameModeBase::DeclareDeadPlayer(uint8 PlayerNum)
 		for(uint8 i = 0; i < 4; i++)
 		{
 			//if the player is alive
-			if(bIsPlayersAlive[i])
+			if(GameInstance->IsPlayerAlive(i))
 			{
 				PlayersAlive++;
 				PlayerIndexAlive = i;
@@ -107,4 +129,18 @@ void AMinigameGameModeBase::PlayerCollision(AAIEProject3Character* Character1, A
 		UE_LOG(LogTemp, Warning, TEXT("Null pointer for characters in MinigameGameModeBase PlayerCollision"));
 		return;
 	}
+}
+
+void AMinigameGameModeBase::DeclarePlayer(AAIEProject3Character* PlayerPointer)
+{
+	if(!PlayerPointer)
+	{
+		return;
+	}
+
+	AController* MyPlayer = PlayerPointer->GetController();
+	APlayerController* PlayerController = Cast<APlayerController>(MyPlayer);
+	Players[PlayerController->GetLocalPlayer()->GetControllerId()] = PlayerPointer;
+
+
 }
