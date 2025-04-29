@@ -38,8 +38,9 @@ public:
 	UFUNCTION(BlueprintCallable)
 	void DisableSplitscreen();
 
-	UFUNCTION(BlueprintCallable)
 	bool IsPlayerAlive(uint8 PlayerNumber);
+
+	bool IsPlayerAlive(class AAIEProject3Character* PlayerPointer);
 
 	UFUNCTION(BlueprintCallable)
 	void SetIsPlayerAlive(uint8 PlayerNumber, bool status);

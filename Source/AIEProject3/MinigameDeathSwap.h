@@ -18,6 +18,8 @@ public:
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
 
+	virtual void DeclarePlayer(AAIEProject3Character* PlayerPointer) override;
+
 protected:
 	// Called when the game starts
 	virtual void BeginPlay() override;

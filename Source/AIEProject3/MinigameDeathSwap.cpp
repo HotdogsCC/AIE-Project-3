@@ -82,3 +82,14 @@ void AMinigameDeathSwap::SwapPlayers(uint8 NumOfPlayers)
 
 
 }
+
+void AMinigameDeathSwap::DeclarePlayer(AAIEProject3Character* PlayerPointer)
+{
+    AMinigameGameModeBase::DeclarePlayer(PlayerPointer);
+
+    UMainGameInstance* GameInstance = Cast<UMainGameInstance>(GetGameInstance());
+    if(!GameInstance->IsPlayerAlive(PlayerPointer))
+    {
+        PlayerPointer->Destroy();
+    }
+}

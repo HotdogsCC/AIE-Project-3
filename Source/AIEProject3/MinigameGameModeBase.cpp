@@ -142,5 +142,5 @@ void AMinigameGameModeBase::DeclarePlayer(AAIEProject3Character* PlayerPointer)
 	APlayerController* PlayerController = Cast<APlayerController>(MyPlayer);
 	Players[PlayerController->GetLocalPlayer()->GetControllerId()] = PlayerPointer;
 
-
+	UE_LOG(LogTemp, Display, TEXT("amazing"));
 }

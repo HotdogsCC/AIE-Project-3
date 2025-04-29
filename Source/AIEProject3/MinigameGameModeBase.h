@@ -46,7 +46,7 @@ public:
 
 	int GetPlayersAlive();
 
-	void DeclarePlayer(AAIEProject3Character* PlayerPointer);
+	virtual void DeclarePlayer(AAIEProject3Character* PlayerPointer);
 	
 
 protected:
