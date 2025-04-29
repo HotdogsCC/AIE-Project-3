@@ -40,10 +40,7 @@ void UMainGameInstance::LoadRandomMinigame()
 
 	//LOAD LEVEL HERE
 	UE_LOG(LogTemp, Display, TEXT("Load %s"), *RandLevel);
-	if(RandLevel.Equals(TEXT("ThirdPersonMap")))
-	{
-		UGameplayStatics::OpenLevel(this, FName(*RandLevel));
-	}
+	UGameplayStatics::OpenLevel(this, FName(*RandLevel));
 }
 
 //Runs when a player joins from the lobby
@@ -63,7 +60,10 @@ void UMainGameInstance::PlayerJoined(uint8 PlayerNum)
 	//GameReadyToStart is a member variable, CanStart is a temp variable
 	GameReadyToStart = CanStart;
 
-	UE_LOG(LogTemp, Display, TEXT("Player %i joined"), PlayerNum);
+	if(GameReadyToStart)
+	{
+		LoadRandomMinigame();
+	}
 	
 }
 

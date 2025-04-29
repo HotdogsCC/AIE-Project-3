@@ -59,7 +59,7 @@ void AUIController::SetupPlayerInputComponent(UInputComponent* PlayerInputCompon
 void AUIController::Select()
 {
 	if(!GetWorld()) return;
-	
+
 	UMainGameInstance* GameInstance = Cast<UMainGameInstance>(GetWorld()->GetGameInstance());
 	if(!GameInstance) return;
 
