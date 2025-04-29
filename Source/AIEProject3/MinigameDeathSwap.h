@@ -20,6 +20,9 @@ public:
 
 	virtual void DeclarePlayer(AAIEProject3Character* PlayerPointer) override;
 
+	UFUNCTION(BlueprintImplementableEvent)
+	void CreateDeadWidget(AAIEProject3Character* PlayerPointer);
+
 protected:
 	// Called when the game starts
 	virtual void BeginPlay() override;

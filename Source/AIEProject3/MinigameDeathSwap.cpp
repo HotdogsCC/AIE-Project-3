@@ -98,9 +98,11 @@ void AMinigameDeathSwap::DeclarePlayer(AAIEProject3Character* PlayerPointer)
 {
     AMinigameGameModeBase::DeclarePlayer(PlayerPointer);
 
+    //kills the player if he is meant to be dead
     UMainGameInstance* GameInstance = Cast<UMainGameInstance>(GetGameInstance());
     if(!GameInstance->IsPlayerAlive(PlayerPointer))
     {
+        CreateDeadWidget(PlayerPointer);
         PlayerPointer->Destroy();
     }
 }
