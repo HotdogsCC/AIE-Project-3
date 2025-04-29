@@ -71,7 +71,6 @@ int AMinigameGameModeBase::GetPlayersAlive()
 	uint8 PlayersAlive = 0;
 	for(uint8 i = 0; i < 4; i++)
 	{
-		
 		//checks if player i is alive
 		UMainGameInstance* GameInstance = Cast<UMainGameInstance>(GetGameInstance());
 		if(GameInstance->IsPlayerAlive(i))

@@ -26,6 +26,23 @@ void AMinigameDeathSwap::Tick(float DeltaTime)
     //someone just died
     if(InitialNumOfPlayers != GetPlayersAlive())
     {
+        //if there is only 1 player left, the game is over
+        if(GetPlayersAlive() == 1)
+        {
+            //figures out which player is alive
+            UMainGameInstance* GameInstance = Cast<UMainGameInstance>(GetGameInstance());
+            for(int i = 0; i < 4; i++)
+            {
+                if(GameInstance->IsPlayerAlive(i))
+                {
+                    //gives that player a win
+                    GameInstance->AddPlayerWin(i);
+                    UGameplayStatics::OpenLevel(this, FName("TitleScreen"));
+                    return;
+                }
+            }
+            
+        }
         UGameplayStatics::OpenLevel(this, FName("ProgrammingPrototyping"));
     }
     
