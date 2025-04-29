@@ -44,11 +44,8 @@ private:
 	void Travel(float DeltaTime);
 
 	//Stores a pointer to the player that we are trying to move
-	AActor* Player;
-
-	//When true, the script will move the player through the pipe
-	bool bIsTravelling;
+	AActor* Players[4] = {nullptr, nullptr, nullptr, nullptr};
 
 	//index to the target the player should be moving to
-	int targIndex = 0;
+	int32 TargetIndexs[4] = {-1, -1, -1, -1};
 };

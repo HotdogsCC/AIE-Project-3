@@ -107,5 +107,4 @@ void AMinigameGameModeBase::PlayerCollision(AAIEProject3Character* Character1, A
 		UE_LOG(LogTemp, Warning, TEXT("Null pointer for characters in MinigameGameModeBase PlayerCollision"));
 		return;
 	}
-	UE_LOG(LogTemp, Display, TEXT("Temp YIPPEE MinigameGameModeBase PlayerCollision"));
 }
