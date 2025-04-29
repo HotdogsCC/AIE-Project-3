@@ -43,6 +43,10 @@ public:
 	TSubclassOf<UUserWidget> TimerWidget;
 	UPROPERTY(EditDefaultsOnly, Category="Timer")
 	float TimeLimit;
+
+	int GetPlayersAlive();
+
+	virtual void DeclarePlayer(AAIEProject3Character* PlayerPointer);
 	
 
 protected:
@@ -53,10 +57,14 @@ protected:
 	
 	UPROPERTY(EditAnywhere, Category="Minigame Config")
 	FEndMode EndMode;
+	class AAIEProject3Character* Players[4];
+	float InitTimeLimit = -1.0f;
 
 private:
-	bool bIsPlayersAlive[4] = {true, true, true, true};
+	
 	class UPopUpUserWidget* PopUpWidgetInstance;
 	bool bTimerOn = false;
+
+
 	
 };

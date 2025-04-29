@@ -70,6 +70,29 @@ void AAIEProject3Character::BeginPlay()
 {
 	// Call the base class  
 	Super::BeginPlay();
+
+	//get the game mode
+	AGameModeBase* GameModeBase = UGameplayStatics::GetGameMode(this);
+	if (!GameModeBase)
+	{
+		UE_LOG(LogTemp, Warning, TEXT("Game Mode not found for AIEProject3Character NotifyHit()"));
+		return;
+	}
+
+	//turn it into a minigame game mode
+	AMinigameGameModeBase* MinigameGameMode = Cast<AMinigameGameModeBase>(GameModeBase);
+	if (!MinigameGameMode)
+	{
+		UE_LOG(LogTemp, Warning, TEXT("Minigame Game Mode not found for AIEProject3Character NotifyHit()"));
+		return;
+	}
+
+	MinigameGameMode->DeclarePlayer(this);
+
+	
+
+	
+
 }
 
 void AAIEProject3Character::Tick(float DeltaTime)

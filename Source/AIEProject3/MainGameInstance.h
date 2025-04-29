@@ -38,6 +38,13 @@ public:
 	UFUNCTION(BlueprintCallable)
 	void DisableSplitscreen();
 
+	bool IsPlayerAlive(uint8 PlayerNumber);
+
+	bool IsPlayerAlive(class AAIEProject3Character* PlayerPointer);
+
+	UFUNCTION(BlueprintCallable)
+	void SetIsPlayerAlive(uint8 PlayerNumber, bool status);
+
 
 private:
 	UPROPERTY()
@@ -51,4 +58,5 @@ private:
 	bool PlayersJoined[4] = {false, false, false, false};
 	//Becomes true when all players have joined
 	bool GameReadyToStart = false;
+	bool bIsPlayersAlive[4] = {true, true, true, true};
 };

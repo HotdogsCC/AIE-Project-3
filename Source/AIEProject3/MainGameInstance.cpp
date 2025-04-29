@@ -4,6 +4,7 @@
 #include "MainGameInstance.h"
 
 #include "Kismet/GameplayStatics.h"
+#include "AIEProject3Character.h"
 
 //Returns the number of wins for a given player
 uint8 UMainGameInstance::GetPlayerWins(const uint8 PlayerNum) const
@@ -62,7 +63,8 @@ void UMainGameInstance::PlayerJoined(uint8 PlayerNum)
 
 	if(GameReadyToStart)
 	{
-		LoadRandomMinigame();
+		UGameplayStatics::OpenLevel(this, FName("MinigameSelection"));
+		//LoadRandomMinigame();
 	}
 	
 }
@@ -92,5 +94,19 @@ void UMainGameInstance::DisableSplitscreen()
 }
 
 
+bool UMainGameInstance::IsPlayerAlive(uint8 PlayerNumber)
+{
+	return bIsPlayersAlive[PlayerNumber];
+}
 
+bool UMainGameInstance::IsPlayerAlive(AAIEProject3Character* PlayerPointer)
+{
+	AController* MyPlayer = PlayerPointer->GetController();
+	APlayerController* PlayerController = Cast<APlayerController>(MyPlayer);
+	return IsPlayerAlive(PlayerController->GetLocalPlayer()->GetControllerId());
+}
 
+void UMainGameInstance::SetIsPlayerAlive(uint8 PlayerNumber, bool status)
+{
+	bIsPlayersAlive[PlayerNumber] = status;
+}
