@@ -34,44 +34,55 @@ void AMinigameDeathSwap::Tick(float DeltaTime)
 void AMinigameDeathSwap::SwapPlayers(uint8 NumOfPlayers)
 {
     FVector TempPosition;
+    
+    TArray<AAIEProject3Character*> PlayersThatAreAlive;
+    UMainGameInstance* GameInstance = Cast<UMainGameInstance>(GetGameInstance());
+    for(int i = 0; i < 4; i++)
+    {
+        if(GameInstance->IsPlayerAlive(i))
+        {
+            PlayersThatAreAlive.Add(Players[i]);
+        }
+    }
+        
     switch (NumOfPlayers)
     {
     case 2:
         
         //temp pos for where player 1 is
-        TempPosition = Players[0]->GetActorLocation();
+        TempPosition = PlayersThatAreAlive[0]->GetActorLocation();
         //moves player 1 to player 2
-        Players[0]->SetActorLocation(Players[1]->GetActorLocation());
+        PlayersThatAreAlive[0]->SetActorLocation(PlayersThatAreAlive[1]->GetActorLocation());
         //moves player 2 to whewre player 1 was
-        Players[1]->SetActorLocation(TempPosition);
+        PlayersThatAreAlive[1]->SetActorLocation(TempPosition);
         break;
 
     case 3:
         //temp pos for where player 1 is
-        TempPosition = Players[0]->GetActorLocation();
+        TempPosition = PlayersThatAreAlive[0]->GetActorLocation();
 
         //moves player 1 to player 2
-        Players[0]->SetActorLocation(Players[1]->GetActorLocation());
+        PlayersThatAreAlive[0]->SetActorLocation(PlayersThatAreAlive[1]->GetActorLocation());
         //moves player 2 to player 3
-        Players[1]->SetActorLocation(Players[2]->GetActorLocation());
+        PlayersThatAreAlive[1]->SetActorLocation(PlayersThatAreAlive[2]->GetActorLocation());
         //moves player 3 to player 1
-        Players[2]->SetActorLocation(TempPosition);
+        PlayersThatAreAlive[2]->SetActorLocation(TempPosition);
         break;
 
     case 4:
         //temp pos for where player 1 is
-        TempPosition = Players[0]->GetActorLocation();
+        TempPosition = PlayersThatAreAlive[0]->GetActorLocation();
         //moves player 1 to player 2
-        Players[0]->SetActorLocation(Players[1]->GetActorLocation());
+        PlayersThatAreAlive[0]->SetActorLocation(PlayersThatAreAlive[1]->GetActorLocation());
         //moves player 2 to whewre player 1 was
-        Players[1]->SetActorLocation(TempPosition);
+        PlayersThatAreAlive[1]->SetActorLocation(TempPosition);
 
         //temp pos for where player 3 is
-        TempPosition = Players[2]->GetActorLocation();
+        TempPosition = PlayersThatAreAlive[2]->GetActorLocation();
         //moves player 3 to player 4
-        Players[2]->SetActorLocation(Players[3]->GetActorLocation());
+        PlayersThatAreAlive[2]->SetActorLocation(PlayersThatAreAlive[3]->GetActorLocation());
         //moves player 2 to whewre player 1 was
-        Players[3]->SetActorLocation(TempPosition);
+        PlayersThatAreAlive[3]->SetActorLocation(TempPosition);
 
         break;
 
