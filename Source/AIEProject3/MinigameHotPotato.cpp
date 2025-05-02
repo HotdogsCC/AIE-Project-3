@@ -88,12 +88,6 @@ void AMinigameHotPotato::Tick(float DeltaTime)
 		TaggedPlayer->Destroy();
 		TaggedPlayer = nullptr;
 
-		//spawn blood
-		if(Blood)
-		{
-			GetWorld()->SpawnActor(Blood, &PlayerLocation);
-		}
-
 		//tell the tagged text actor to fuck off
 		FVector MiddleOfNowhere(0.0f, 0.0f, -99999.0f);
 		TaggedTextActor->SetActorLocation(MiddleOfNowhere);

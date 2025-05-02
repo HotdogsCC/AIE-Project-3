@@ -90,7 +90,15 @@ void AMinigameGameModeBase::DeclareDeadPlayer(uint8 PlayerNum)
 	if (Character)
 	{
 		DisplayDeadWidget(Character);
+		//spawn blood
+		if (Blood)
+		{
+			const FVector Location = Character->GetActorLocation();
+			GetWorld()->SpawnActor(Blood, &Location);
+		}
 	}
+
+	
 	
 	
 	UMainGameInstance* GameInstance = Cast<UMainGameInstance>(GetGameInstance());

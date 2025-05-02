@@ -53,6 +53,10 @@ public:
 	int GetPlayersAlive();
 
 	virtual void DeclarePlayer(AAIEProject3Character* PlayerPointer);
+
+	//blood
+	UPROPERTY(EditDefaultsOnly)
+	TSubclassOf<AActor> Blood;
 	
 
 protected:
