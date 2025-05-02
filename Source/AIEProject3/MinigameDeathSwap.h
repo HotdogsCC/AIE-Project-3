@@ -37,6 +37,9 @@ public:
 	//the instance of the blueprint
 	AActor* SafeGuardTextActor;
 
+	UPROPERTY(EditDefaultsOnly)
+	TArray<FName> MapNames;
+
 protected:
 	// Called when the game starts
 	virtual void BeginPlay() override;
