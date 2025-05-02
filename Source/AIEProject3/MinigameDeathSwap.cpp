@@ -56,13 +56,28 @@ void AMinigameDeathSwap::Tick(float DeltaTime)
                 {
                     //gives that player a win
                     GameInstance->AddPlayerWin(i);
-                    UGameplayStatics::OpenLevel(this, FName("TitleScreen"));
+                    UGameplayStatics::OpenLevel(this, FName("MinigameSelection"));
                     return;
                 }
             }
             
         }
-        UGameplayStatics::OpenLevel(this, FName("ProgrammingPrototyping"));
+        //how many players are alive after someone died
+        switch (GetPlayersAlive())
+        {
+        case 3:
+            UGameplayStatics::OpenLevel(this, FName("WG_2Death_Swap_MIni-game"));
+            break;
+        case 2:
+            UGameplayStatics::OpenLevel(this, FName("WG_3Death_Swap_MIni-game"));
+            break;
+        case 1:
+            UGameplayStatics::OpenLevel(this, FName("MinigameSelection"));
+        default:
+            UGameplayStatics::OpenLevel(this, FName("TitleScreen"));
+            break;
+        }
+        
     }
     
 }
@@ -122,7 +137,8 @@ void AMinigameDeathSwap::SwapPlayers(uint8 NumOfPlayers)
 
         break;
 
-        default:
+    default:
+
         break;
 
     }
