@@ -5,12 +5,26 @@
 #include "AIEProject3Character.h"
 #include "Kismet/GameplayStatics.h"
 #include "MainGameInstance.h"
+#include "Engine/TextRenderActor.h"
 
 void AMinigameDeathSwap::BeginPlay()
 {
     Super::BeginPlay();
 
     InitialNumOfPlayers = GetPlayersAlive();
+
+    if (!SafeGuardTextBlueprint)
+    {
+        UE_LOG(LogTemp, Warning, TEXT("There was no safe guard Text blueprint attached to the minigame death swap game mode"));
+        return;
+    }
+
+    //Spawn the text actor
+    SafeGuardTextActor = GetWorld()->SpawnActor(SafeGuardTextBlueprint);
+
+    //make it go away
+    FVector MiddleOfNowhere(0.0f, 0.0f, -99999.0f);
+    SafeGuardTextActor->SetActorLocation(MiddleOfNowhere);
 }
 
 void AMinigameDeathSwap::Tick(float DeltaTime)
@@ -21,6 +35,11 @@ void AMinigameDeathSwap::Tick(float DeltaTime)
     {
         SwapPlayers(InitialNumOfPlayers);
         TimeLimit = InitTimeLimit;
+    }
+
+    if (SafeGuardedPlayer && SafeGuardTextActor)
+    {
+        ProcessSafeGuard();
     }
 
     //someone just died
@@ -122,4 +141,19 @@ void AMinigameDeathSwap::DeclarePlayer(AAIEProject3Character* PlayerPointer)
         CreateDeadWidget(PlayerPointer);
         PlayerPointer->Destroy();
     }
+}
+
+void AMinigameDeathSwap::ProcessSafeGuard()
+{
+    const FVector PlayerLocation = SafeGuardedPlayer->GetActorLocation();
+    SafeGuardTextActor->SetActorLocation(SafeGuardedPlayer->GetActorLocation());
+}
+
+void AMinigameDeathSwap::SetPlayerWithSafeGuard(AAIEProject3Character* PlayerPointer)
+{
+    if (PlayerPointer)
+    {
+        SafeGuardedPlayer = PlayerPointer;
+    }
+    
 }
