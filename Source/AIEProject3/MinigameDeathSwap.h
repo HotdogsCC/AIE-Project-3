@@ -28,6 +28,8 @@ public:
 	UFUNCTION(BlueprintCallable)
 	void SetPlayerWithSafeGuard(AAIEProject3Character* PlayerPointer);
 
+	AAIEProject3Character* GetPlayerWithSafeGuard() const { return SafeGuardedPlayer; }
+
 	//The blueprint of the text asset
 	UPROPERTY(EditDefaultsOnly)
 	TSubclassOf<ATextRenderActor> SafeGuardTextBlueprint;
