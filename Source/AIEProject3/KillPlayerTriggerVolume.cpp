@@ -32,9 +32,6 @@ void AKillPlayerTriggerVolume::OnOverlapBegin(AActor* OverlappedActor, AActor* O
                 // tell the game mode player x died
                 GameMode->DeclareDeadPlayer(PlayerController->GetLocalPlayer()->GetControllerId());
             }
-            
-            
-            
         }
         else
         {

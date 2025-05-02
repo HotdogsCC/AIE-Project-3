@@ -33,6 +33,9 @@ public:
 	//Called for the Last Player gamemode
 	void DeclareDeadPlayer(uint8 PlayerNum);
 
+	//displays a widget saying the player died
+	void DisplayDeadWidget(ACharacter* Player);
+
 	///Called when two players collide
 	virtual void PlayerCollision(AAIEProject3Character* Character1, AAIEProject3Character* Character2);
 
@@ -44,9 +47,16 @@ public:
 	UPROPERTY(EditDefaultsOnly, Category="Timer")
 	float TimeLimit;
 
+	UPROPERTY(EditAnywhere, Category="UI")
+	TSubclassOf<UUserWidget> DeathWidget;
+
 	int GetPlayersAlive();
 
 	virtual void DeclarePlayer(AAIEProject3Character* PlayerPointer);
+
+	//blood
+	UPROPERTY(EditDefaultsOnly)
+	TSubclassOf<AActor> Blood;
 	
 
 protected:

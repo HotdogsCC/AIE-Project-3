@@ -63,7 +63,7 @@ void UMainGameInstance::PlayerJoined(uint8 PlayerNum)
 
 	if(GameReadyToStart)
 	{
-		UGameplayStatics::OpenLevel(this, FName("MinigameSelection"));
+		LoadMinigameSelection();
 		//LoadRandomMinigame();
 	}
 	
@@ -109,4 +109,9 @@ bool UMainGameInstance::IsPlayerAlive(AAIEProject3Character* PlayerPointer)
 void UMainGameInstance::SetIsPlayerAlive(uint8 PlayerNumber, bool status)
 {
 	bIsPlayersAlive[PlayerNumber] = status;
+}
+
+void UMainGameInstance::LoadMinigameSelection()
+{
+	UGameplayStatics::OpenLevel(this, FName("MinigameSelection"));
 }

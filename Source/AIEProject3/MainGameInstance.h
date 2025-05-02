@@ -29,6 +29,8 @@ public:
 	UFUNCTION(BlueprintCallable)
 	void LoadRandomMinigame();
 
+	void LoadMinigameSelection();
+
 	UFUNCTION(BlueprintCallable)
 	void PlayerJoined(uint8 PlayerNum);
 

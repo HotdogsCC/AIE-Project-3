@@ -85,6 +85,20 @@ int AMinigameGameModeBase::GetPlayersAlive()
 void AMinigameGameModeBase::DeclareDeadPlayer(uint8 PlayerNum)
 {
     UE_LOG(LogTemp, Display, TEXT("Player %i died"), PlayerNum);
+
+	ACharacter* Character = UGameplayStatics::GetPlayerCharacter(this, PlayerNum);
+	if (Character)
+	{
+		DisplayDeadWidget(Character);
+		//spawn blood
+		if (Blood)
+		{
+			const FVector Location = Character->GetActorLocation();
+			GetWorld()->SpawnActor(Blood, &Location);
+		}
+	}
+
+	
 	
 	
 	UMainGameInstance* GameInstance = Cast<UMainGameInstance>(GetGameInstance());
@@ -118,6 +132,17 @@ void AMinigameGameModeBase::DeclareDeadPlayer(uint8 PlayerNum)
 void AMinigameGameModeBase::PlayerWon(uint8 PlayerNum)
 {
 	UE_LOG(LogTemp, Display, TEXT("Player %i won!"), PlayerNum);
+
+	//increments the amount of player wins
+	UMainGameInstance* GameInstance = Cast<UMainGameInstance>(GetGameInstance());
+	if (GameInstance)
+	{
+		GameInstance->AddPlayerWin(PlayerNum);
+	}
+
+	//retrun back to minigame selection
+	GameInstance->LoadMinigameSelection();
+
 }
 
 //When two players collide, can be overrided for specific functionality in minigames
@@ -142,4 +167,23 @@ void AMinigameGameModeBase::DeclarePlayer(AAIEProject3Character* PlayerPointer)
 	Players[PlayerController->GetLocalPlayer()->GetControllerId()] = PlayerPointer;
 
 	UE_LOG(LogTemp, Display, TEXT("amazing"));
+}
+
+void AMinigameGameModeBase::DisplayDeadWidget(ACharacter* Character)
+{
+	if (Character)
+	{
+		APlayerController* PlayerController = Cast<APlayerController>(Character->GetController());
+		if (PlayerController)
+		{
+			UUserWidget* WidgetInstance = CreateWidget(PlayerController, DeathWidget);
+			if (WidgetInstance)
+			{
+				WidgetInstance->AddToPlayerScreen();
+			}
+		}
+	}
+	
+
+	
 }
