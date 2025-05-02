@@ -16,6 +16,7 @@ class AIEPROJECT3_API AKillPlayerTriggerVolume : public ATriggerVolume
 
 public:
 	AKillPlayerTriggerVolume();
+
 protected:
 	// Called when the game starts
 	virtual void BeginPlay() override;

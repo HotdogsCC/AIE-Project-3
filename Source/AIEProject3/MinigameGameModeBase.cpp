@@ -85,6 +85,12 @@ int AMinigameGameModeBase::GetPlayersAlive()
 void AMinigameGameModeBase::DeclareDeadPlayer(uint8 PlayerNum)
 {
     UE_LOG(LogTemp, Display, TEXT("Player %i died"), PlayerNum);
+
+	ACharacter* Character = UGameplayStatics::GetPlayerCharacter(this, PlayerNum);
+	if (Character)
+	{
+		DisplayDeadWidget(Character);
+	}
 	
 	
 	UMainGameInstance* GameInstance = Cast<UMainGameInstance>(GetGameInstance());
@@ -153,4 +159,23 @@ void AMinigameGameModeBase::DeclarePlayer(AAIEProject3Character* PlayerPointer)
 	Players[PlayerController->GetLocalPlayer()->GetControllerId()] = PlayerPointer;
 
 	UE_LOG(LogTemp, Display, TEXT("amazing"));
+}
+
+void AMinigameGameModeBase::DisplayDeadWidget(ACharacter* Character)
+{
+	if (Character)
+	{
+		APlayerController* PlayerController = Cast<APlayerController>(Character->GetController());
+		if (PlayerController)
+		{
+			UUserWidget* WidgetInstance = CreateWidget(PlayerController, DeathWidget);
+			if (WidgetInstance)
+			{
+				WidgetInstance->AddToPlayerScreen();
+			}
+		}
+	}
+	
+
+	
 }
