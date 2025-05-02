@@ -118,6 +118,17 @@ void AMinigameGameModeBase::DeclareDeadPlayer(uint8 PlayerNum)
 void AMinigameGameModeBase::PlayerWon(uint8 PlayerNum)
 {
 	UE_LOG(LogTemp, Display, TEXT("Player %i won!"), PlayerNum);
+
+	//increments the amount of player wins
+	UMainGameInstance* GameInstance = Cast<UMainGameInstance>(GetGameInstance());
+	if (GameInstance)
+	{
+		GameInstance->AddPlayerWin(PlayerNum);
+	}
+
+	//retrun back to minigame selection
+	GameInstance->LoadMinigameSelection();
+
 }
 
 //When two players collide, can be overrided for specific functionality in minigames
