@@ -66,6 +66,9 @@ public:
 	UPROPERTY(EditDefaultsOnly, Category = "Bounce")
 	float Bounciness = 5.0f;
 
+	UPROPERTY(EditDefaultsOnly, Category = "Materials")
+	TArray<UMaterialInstance*> CharacterBallMaterials;
+
 	//used by other actor to see if it should bounce
 	bool GetShouldBounce() const { return bShouldBounce; }
 };
