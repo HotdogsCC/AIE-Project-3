@@ -176,11 +176,15 @@ void AMinigameGameModeBase::DisplayDeadWidget(ACharacter* Character)
 		APlayerController* PlayerController = Cast<APlayerController>(Character->GetController());
 		if (PlayerController)
 		{
-			UUserWidget* WidgetInstance = CreateWidget(PlayerController, DeathWidget);
-			if (WidgetInstance)
+			if (DeathWidget)
 			{
-				WidgetInstance->AddToPlayerScreen();
+				UUserWidget* WidgetInstance = CreateWidget(PlayerController, DeathWidget);
+				if (WidgetInstance)
+				{
+					WidgetInstance->AddToPlayerScreen();
+				}
 			}
+			
 		}
 	}
 	
