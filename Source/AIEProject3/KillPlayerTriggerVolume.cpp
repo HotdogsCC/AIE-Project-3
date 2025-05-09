@@ -6,7 +6,7 @@
 #include "MinigameGameModeBase.h"
 #include "Kismet/GameplayStatics.h"
 #include "MinigameDeathSwap.h"
-#include "AIEProject3Character.h"
+#include "MinigameCharacterBase.h"
 AKillPlayerTriggerVolume::AKillPlayerTriggerVolume()
 {
     //Bind delegates
@@ -32,7 +32,7 @@ void AKillPlayerTriggerVolume::OnOverlapBegin(AActor* OverlappedActor, AActor* O
             if (AMinigameDeathSwap* DeathSwapGM = Cast<AMinigameDeathSwap>(GameMode))
             {
                 //if the player has the safe guard
-                AAIEProject3Character* AIECharacter = Cast<AAIEProject3Character>(Character);
+                AMinigameCharacterBase* AIECharacter = Cast<AMinigameCharacterBase>(Character);
                 if (AIECharacter == DeathSwapGM->GetPlayerWithSafeGuard())
                 {
                     //dont do anything, because they shouldnt die

@@ -4,7 +4,7 @@
 #include "MainGameInstance.h"
 
 #include "Kismet/GameplayStatics.h"
-#include "AIEProject3Character.h"
+#include "MinigameCharacterBase.h"
 
 //Returns the number of wins for a given player
 uint8 UMainGameInstance::GetPlayerWins(const uint8 PlayerNum) const
@@ -99,7 +99,7 @@ bool UMainGameInstance::IsPlayerAlive(uint8 PlayerNumber)
 	return bIsPlayersAlive[PlayerNumber];
 }
 
-bool UMainGameInstance::IsPlayerAlive(AAIEProject3Character* PlayerPointer)
+bool UMainGameInstance::IsPlayerAlive(AMinigameCharacterBase* PlayerPointer)
 {
 	AController* MyPlayer = PlayerPointer->GetController();
 	APlayerController* PlayerController = Cast<APlayerController>(MyPlayer);

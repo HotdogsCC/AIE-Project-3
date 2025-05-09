@@ -42,7 +42,7 @@ public:
 
 	bool IsPlayerAlive(uint8 PlayerNumber);
 
-	bool IsPlayerAlive(class AAIEProject3Character* PlayerPointer);
+	bool IsPlayerAlive(class AMinigameCharacterBase* PlayerPointer);
 
 	UFUNCTION(BlueprintCallable)
 	void SetIsPlayerAlive(uint8 PlayerNumber, bool status);

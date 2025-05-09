@@ -6,7 +6,7 @@
 #include "PopUpUserWidget.h"
 #include "Blueprint/UserWidget.h"
 #include "Kismet/GameplayStatics.h"
-#include "AIEProject3Character.h"
+#include "MinigameCharacterBase.h"
 #include "MainGameInstance.h"
 
 AMinigameGameModeBase::AMinigameGameModeBase()
@@ -146,7 +146,7 @@ void AMinigameGameModeBase::PlayerWon(uint8 PlayerNum)
 }
 
 //When two players collide, can be overrided for specific functionality in minigames
-void AMinigameGameModeBase::PlayerCollision(AAIEProject3Character* Character1, AAIEProject3Character* Character2)
+void AMinigameGameModeBase::PlayerCollision(AMinigameCharacterBase* Character1, AMinigameCharacterBase* Character2)
 {
 	if (!Character1 || !Character2)
 	{
@@ -155,7 +155,7 @@ void AMinigameGameModeBase::PlayerCollision(AAIEProject3Character* Character1, A
 	}
 }
 
-void AMinigameGameModeBase::DeclarePlayer(AAIEProject3Character* PlayerPointer)
+void AMinigameGameModeBase::DeclarePlayer(AMinigameCharacterBase* PlayerPointer)
 {
 	if(!PlayerPointer)
 	{

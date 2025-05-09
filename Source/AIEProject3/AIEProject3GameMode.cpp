@@ -1,7 +1,6 @@
 // Copyright Epic Games, Inc. All Rights Reserved.
 
 #include "AIEProject3GameMode.h"
-#include "AIEProject3Character.h"
 #include "UObject/ConstructorHelpers.h"
 
 AAIEProject3GameMode::AAIEProject3GameMode()

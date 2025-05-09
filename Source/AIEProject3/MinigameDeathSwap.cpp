@@ -2,10 +2,10 @@
 
 
 #include "MinigameDeathSwap.h"
-#include "AIEProject3Character.h"
 #include "Kismet/GameplayStatics.h"
 #include "MainGameInstance.h"
 #include "Engine/TextRenderActor.h"
+#include "MinigameCharacterBase.h"
 
 void AMinigameDeathSwap::BeginPlay()
 {
@@ -86,7 +86,7 @@ void AMinigameDeathSwap::SwapPlayers(uint8 NumOfPlayers)
 {
     FVector TempPosition;
     
-    TArray<AAIEProject3Character*> PlayersThatAreAlive;
+    TArray<AMinigameCharacterBase*> PlayersThatAreAlive;
     UMainGameInstance* GameInstance = Cast<UMainGameInstance>(GetGameInstance());
     for(int i = 0; i < 4; i++)
     {
@@ -146,7 +146,7 @@ void AMinigameDeathSwap::SwapPlayers(uint8 NumOfPlayers)
 
 }
 
-void AMinigameDeathSwap::DeclarePlayer(AAIEProject3Character* PlayerPointer)
+void AMinigameDeathSwap::DeclarePlayer(AMinigameCharacterBase* PlayerPointer)
 {
     AMinigameGameModeBase::DeclarePlayer(PlayerPointer);
 
@@ -165,7 +165,7 @@ void AMinigameDeathSwap::ProcessSafeGuard()
     SafeGuardTextActor->SetActorLocation(SafeGuardedPlayer->GetActorLocation());
 }
 
-void AMinigameDeathSwap::SetPlayerWithSafeGuard(AAIEProject3Character* PlayerPointer)
+void AMinigameDeathSwap::SetPlayerWithSafeGuard(AMinigameCharacterBase* PlayerPointer)
 {
     if (PlayerPointer)
     {

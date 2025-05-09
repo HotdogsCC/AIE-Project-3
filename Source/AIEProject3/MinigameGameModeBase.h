@@ -5,7 +5,7 @@
 #include "CoreMinimal.h"
 #include "GameFramework/GameModeBase.h"
 #include "MinigameGameModeBase.generated.h"
-class AAIEProject3Character; // cheeky forward declare
+class AMinigameCharacterBase; // cheeky forward declare
 
 /**
  * 
@@ -37,7 +37,7 @@ public:
 	void DisplayDeadWidget(ACharacter* Player);
 
 	///Called when two players collide
-	virtual void PlayerCollision(AAIEProject3Character* Character1, AAIEProject3Character* Character2);
+	virtual void PlayerCollision(AMinigameCharacterBase* Character1, AMinigameCharacterBase* Character2);
 
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
@@ -52,7 +52,7 @@ public:
 
 	int GetPlayersAlive();
 
-	virtual void DeclarePlayer(AAIEProject3Character* PlayerPointer);
+	virtual void DeclarePlayer(AMinigameCharacterBase* PlayerPointer);
 
 	//blood
 	UPROPERTY(EditDefaultsOnly)
@@ -67,7 +67,7 @@ protected:
 	
 	UPROPERTY(EditAnywhere, Category="Minigame Config")
 	FEndMode EndMode;
-	class AAIEProject3Character* Players[4];
+	class AMinigameCharacterBase* Players[4];
 	float InitTimeLimit = -1.0f;
 
 private:

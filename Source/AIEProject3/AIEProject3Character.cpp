@@ -21,29 +21,6 @@ DEFINE_LOG_CATEGORY(LogTemplateCharacter);
 
 AAIEProject3Character::AAIEProject3Character()
 {
-	PrimaryActorTick.bCanEverTick = true; // Enables ticking
-	
-	// Set size for collision capsule
-	GetCapsuleComponent()->InitCapsuleSize(42.f, 96.0f);
-		
-	// Don't rotate when the controller rotates. Let that just affect the camera.
-	bUseControllerRotationPitch = false;
-	bUseControllerRotationYaw = false;
-	bUseControllerRotationRoll = false;
-
-	// Configure character movement
-	GetCharacterMovement()->bOrientRotationToMovement = true; // Character moves in the direction of input...	
-	GetCharacterMovement()->RotationRate = FRotator(0.0f, 500.0f, 0.0f); // ...at this rotation rate
-
-	// Note: For faster iteration times these variables, and many more, can be tweaked in the Character Blueprint
-	// instead of recompiling to adjust them
-	GetCharacterMovement()->JumpZVelocity = 700.f;
-	GetCharacterMovement()->AirControl = 0.35f;
-	GetCharacterMovement()->MaxWalkSpeed = 500.f;
-	GetCharacterMovement()->MinAnalogWalkSpeed = 20.f;
-	GetCharacterMovement()->BrakingDecelerationWalking = 2000.f;
-	GetCharacterMovement()->BrakingDecelerationFalling = 1500.0f;
-
 	// Create a camera boom (pulls in towards the player if there is a collision)
 	CameraBoom = CreateDefaultSubobject<USpringArmComponent>(TEXT("CameraBoom"));
 	CameraBoom->SetupAttachment(RootComponent);
@@ -55,13 +32,7 @@ AAIEProject3Character::AAIEProject3Character()
 	FollowCamera->SetupAttachment(CameraBoom, USpringArmComponent::SocketName); // Attach the camera to the end of the boom and let the boom adjust to match the controller orientation
 	FollowCamera->bUsePawnControlRotation = false; // Camera does not rotate relative to arm
 
-	// Create the ball
-	BallComponent = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("HampterBall"));
-	BallComponent->SetupAttachment(RootComponent);
-
-	//set up collision delegate
-	GetCapsuleComponent()->OnComponentBeginOverlap.AddDynamic(this, &AAIEProject3Character::OnOverlapBegin);
-	GetCapsuleComponent()->OnComponentHit.AddDynamic(this, &AAIEProject3Character::NotifyHit);
+	
 	// Note: The skeletal mesh and anim blueprint references on the Mesh component (inherited from Character) 
 	// are set in the derived blueprint asset named ThirdPersonCharacter (to avoid direct content references in C++)
 }
@@ -159,9 +130,7 @@ void AAIEProject3Character::Move(const FInputActionValue& Value)
 		AddMovementInput(ForwardDirection, MovementVector.Y);
 		AddMovementInput(RightDirection, MovementVector.X);
 		
-		//UE_LOG(LogTemp, Display, TEXT("%f"),Controller->GetCharacter()->GetVelocity().Length());
 		float RotateDelta = Controller->GetCharacter()->GetVelocity().Length() * -0.573248f * UGameplayStatics::GetWorldDeltaSeconds(this);
-		//UE_LOG(LogTemp, Display, TEXT("%f"),RotateDelta);
 		if(BallComponent != nullptr)
 		{
 			FRotator BallRotation;
@@ -186,74 +155,5 @@ void AAIEProject3Character::Look(const FInputActionValue& Value)
 	}
 }
 
-//deprecated
-void AAIEProject3Character::OnOverlapBegin(UPrimitiveComponent* OverlappedComp, AActor* OtherActor,
-	UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
-{
-	//UE_LOG(LogTemp, Display, TEXT("%s touched %s"), *this->GetName(), *OtherActor->GetName());
-}
 
-void AAIEProject3Character::NotifyHit(UPrimitiveComponent* HitComp, AActor* OtherActor, UPrimitiveComponent* OtherComp, FVector NormalImpulse, const FHitResult& Hit)
-{
-	//try to cast to player
-	AAIEProject3Character* OtherCharacter = Cast<AAIEProject3Character>(OtherActor);
-	if (OtherCharacter && bShouldBounce)
-	{
-		//make sure we don't bounce for a little bit
-		//i.e. prevent infinite loop
-		bShouldBounce = false;
-
-		//reset bShouldBounce to true in 0.1 secs
-		GetWorld()->GetTimerManager().SetTimer(
-			BounceResetTimer, this, &AAIEProject3Character::ResetBounce, 0.1f);
-
-		//calc a force for bounce
-		FVector FromOtherToThis = GetActorLocation() - OtherCharacter->GetActorLocation();
-		FromOtherToThis.Normalize();
-		FromOtherToThis *= 1000000.0f;
-		FromOtherToThis *= Bounciness;
-
-		//set force on this
-		GetCharacterMovement()->AddForce(FromOtherToThis);
-
-		//sometimes unreal engine is a piece of shit and decides it doesn't want to
-		//say that there was a collision for the other actor.
-		//in this case, we will manually do it
-		if(OtherCharacter->GetShouldBounce())
-		{
-			OtherCharacter->NotifyHit(HitComp, this, nullptr, NormalImpulse, Hit);
-		}
-		//if this else condition triggers, it means that both characters have successfully processed
-		//their collision! yippee!
-		//in this case, we need to let the game mode know that a collision occured
-		else
-		{
-			//get the game mode
-			AGameModeBase* GameModeBase = UGameplayStatics::GetGameMode(this);
-			if (!GameModeBase)
-			{
-				UE_LOG(LogTemp, Warning, TEXT("Game Mode not found for AIEProject3Character NotifyHit()"));
-				return;
-			}
-
-			//turn it into a minigame game mode
-			AMinigameGameModeBase* MinigameGameMode = Cast<AMinigameGameModeBase>(GameModeBase);
-			if (!MinigameGameMode)
-			{
-				UE_LOG(LogTemp, Warning, TEXT("Minigame Game Mode not found for AIEProject3Character NotifyHit()"));
-				return;
-			}
-
-			//tell the minigame a collision occured
-			MinigameGameMode->PlayerCollision(this, OtherCharacter);
-			
-		}
-	}
-	
-}
-
-void AAIEProject3Character::ResetBounce()
-{
-	bShouldBounce = true;
-}
 
