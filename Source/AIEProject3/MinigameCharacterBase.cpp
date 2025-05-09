@@ -50,6 +50,21 @@ AMinigameCharacterBase::AMinigameCharacterBase()
 void AMinigameCharacterBase::BeginPlay()
 {
 	Super::BeginPlay();
+
+	//check there are materials
+	if (CharacterBallMaterials.Num() > 0)
+	{
+		if (GetController())
+		{
+			if (APlayerController* PlayerController = Cast<APlayerController>(GetController()))
+			{
+				const uint8 PlayerControllerIndex = PlayerController->GetLocalPlayer()->GetControllerId();
+				BallComponent->SetMaterial(0, CharacterBallMaterials[PlayerControllerIndex]);
+			}
+		}
+		
+
+	}
 	
 }
 
