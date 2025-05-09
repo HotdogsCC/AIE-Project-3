@@ -26,6 +26,19 @@ void ABetweenMinigameManager::Tick(float DeltaTime)
 
 void ABetweenMinigameManager::SetSplitscreenStatus(bool bIsOn)
 {
+	UE_LOG(LogTemp, Display, TEXT("Does anyone actually use me?"));
+	UE_LOG(LogTemp, Display, TEXT("Does anyone actually use me?"));
+	UE_LOG(LogTemp, Display, TEXT("Does anyone actually use me?"));
+	UE_LOG(LogTemp, Display, TEXT("Does anyone actually use me?"));
+	UE_LOG(LogTemp, Display, TEXT("Does anyone actually use me?"));
+	UE_LOG(LogTemp, Display, TEXT("Does anyone actually use me?"));
+	UE_LOG(LogTemp, Display, TEXT("Does anyone actually use me?"));
+	UE_LOG(LogTemp, Display, TEXT("Does anyone actually use me?"));
+	UE_LOG(LogTemp, Display, TEXT("Does anyone actually use me?"));
+	UE_LOG(LogTemp, Display, TEXT("Does anyone actually use me?"));
+	UE_LOG(LogTemp, Display, TEXT("Does anyone actually use me?"));
+	UE_LOG(LogTemp, Display, TEXT("Does anyone actually use me?"));
+	UE_LOG(LogTemp, Display, TEXT("Does anyone actually use me?"));
 	//having 'true' disable splitscreen is silly, so there is a layer of abstraction here
 	//passing in true enables splitscreen, false turns it off
 	GetWorld()->GetGameViewport()->SetForceDisableSplitscreen(!bIsOn);

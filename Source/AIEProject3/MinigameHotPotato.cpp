@@ -8,12 +8,16 @@
 #include "Engine/Engine.h"
 #include "Engine/TextRenderActor.h"
 #include "MinigameCharacterBase.h"
+#include "MainGameInstance.h"
 
 //called on first frame
 void AMinigameHotPotato::BeginPlay()
 {
 	Super::BeginPlay();
 	
+	EndMode = FEndMode::LASTPLAYER;
+	InitTimeLimit = TimeLimit;
+
 	//check there is a valid reference to tagged text
 	if(!TaggedTextBlueprint)
 	{
@@ -30,14 +34,23 @@ void AMinigameHotPotato::BeginPlay()
 
 void AMinigameHotPotato::AssignTagged()
 {
-	//pick a random number between 0 and 3 inclusive
-	//const uint8 PlayerIndex= FMath::RandRange(0, 3);
-	const uint8 PlayerIndex = 0;
+	//gets player indexs of players alive	
+	TArray<uint8> PlayersIndexesThatAreAlive;
+	UMainGameInstance* GameInstance = Cast<UMainGameInstance>(GetGameInstance());
+	for (uint8 i = 0; i < 4; i++)
+	{
+		if (GameInstance->IsPlayerAlive(i))
+		{
+			UE_LOG(LogTemp, Display, TEXT("Player %i is alive"), i);
+			PlayersIndexesThatAreAlive.Add(i);
+		}
+	}
 
-	//OI
-	//OI
-	//OI
-	//YOU BETTER CHANGE ME FROM PLAYER 0 TO A RANDOM ONE
+	//picks a random index from that array
+	const uint8 MaxPlayerIndex = PlayersIndexesThatAreAlive.Num() - 1;
+	const uint8 IndexForPlayersAlive = FMath::RandRange(0, MaxPlayerIndex);
+	const uint8 PlayerIndex = PlayersIndexesThatAreAlive[IndexForPlayersAlive];
+
 
 	//Get the player from that index
 	APlayerController* PlayerController = UGameplayStatics::GetPlayerController(this, PlayerIndex);
@@ -91,6 +104,10 @@ void AMinigameHotPotato::Tick(float DeltaTime)
 		//tell the tagged text actor to fuck off
 		FVector MiddleOfNowhere(0.0f, 0.0f, -99999.0f);
 		TaggedTextActor->SetActorLocation(MiddleOfNowhere);
+
+		//reset for another round
+		TimeLimit = InitTimeLimit;
+		AssignTagged();
 	}
 	
 }
