@@ -7,6 +7,7 @@
 #include "MinigameHotPotato.generated.h"
 
 class ATextRenderActor;
+class AMinigameCharacterBase;
 /**
  * 
  */
@@ -20,7 +21,7 @@ public:
 	virtual void Tick(float DeltaTime) override;
 	
 	///Called when two players collide
-	virtual void PlayerCollision(AAIEProject3Character* Character1, AAIEProject3Character* Character2) override;
+	virtual void PlayerCollision(AMinigameCharacterBase* Character1, AMinigameCharacterBase* Character2) override;
 
 	//The blueprint of the text asset
 	UPROPERTY(EditDefaultsOnly)
@@ -38,5 +39,5 @@ private:
 	void AssignTagged();
 	
 	//Stores a pointer to the player that is currently it
-	AAIEProject3Character* TaggedPlayer;
+	AMinigameCharacterBase* TaggedPlayer;
 };

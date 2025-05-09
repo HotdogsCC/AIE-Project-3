@@ -20,15 +20,15 @@ public:
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
 
-	virtual void DeclarePlayer(AAIEProject3Character* PlayerPointer) override;
+	virtual void DeclarePlayer(AMinigameCharacterBase* PlayerPointer) override;
 
 	UFUNCTION(BlueprintImplementableEvent)
-	void CreateDeadWidget(AAIEProject3Character* PlayerPointer);
+	void CreateDeadWidget(AMinigameCharacterBase* PlayerPointer);
 
 	UFUNCTION(BlueprintCallable)
-	void SetPlayerWithSafeGuard(AAIEProject3Character* PlayerPointer);
+	void SetPlayerWithSafeGuard(AMinigameCharacterBase* PlayerPointer);
 
-	AAIEProject3Character* GetPlayerWithSafeGuard() const { return SafeGuardedPlayer; }
+	AMinigameCharacterBase* GetPlayerWithSafeGuard() const { return SafeGuardedPlayer; }
 
 	//The blueprint of the text asset
 	UPROPERTY(EditDefaultsOnly)
@@ -49,7 +49,7 @@ private:
 
 	void SwapPlayers(uint8 NumOfPlayers);
 
-	AAIEProject3Character* SafeGuardedPlayer = nullptr;
+	AMinigameCharacterBase* SafeGuardedPlayer = nullptr;
 
 	void ProcessSafeGuard();
 	

@@ -3,11 +3,11 @@
 
 #include "MinigameHotPotato.h"
 
-#include "AIEProject3Character.h"
 #include "GeometryTypes.h"
 #include "Kismet/GameplayStatics.h"
 #include "Engine/Engine.h"
 #include "Engine/TextRenderActor.h"
+#include "MinigameCharacterBase.h"
 
 //called on first frame
 void AMinigameHotPotato::BeginPlay()
@@ -50,7 +50,7 @@ void AMinigameHotPotato::AssignTagged()
 	}
 
 	//Set the tagged player from the controller
-	TaggedPlayer = Cast<AAIEProject3Character>(PlayerController->GetPawn());
+	TaggedPlayer = Cast<AMinigameCharacterBase>(PlayerController->GetPawn());
 
 	//make sure the tagged player is not null
 	if(!TaggedPlayer)
@@ -97,7 +97,7 @@ void AMinigameHotPotato::Tick(float DeltaTime)
 
 
 //Called when two players collide
-void AMinigameHotPotato::PlayerCollision(AAIEProject3Character* Character1, AAIEProject3Character* Character2)
+void AMinigameHotPotato::PlayerCollision(AMinigameCharacterBase* Character1, AMinigameCharacterBase* Character2)
 {
 	//check that we have legit pointers
 	if (!Character1 || !Character2)
