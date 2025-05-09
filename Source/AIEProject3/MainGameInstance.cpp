@@ -115,3 +115,11 @@ void UMainGameInstance::LoadMinigameSelection()
 {
 	UGameplayStatics::OpenLevel(this, FName("MinigameSelection"));
 }
+
+void UMainGameInstance::SetAllPlayersAlive()
+{
+	for (uint8 i = 0; i < 4; i++)
+	{
+		SetIsPlayerAlive(i, true);
+	}
+}

@@ -47,6 +47,9 @@ public:
 	UFUNCTION(BlueprintCallable)
 	void SetIsPlayerAlive(uint8 PlayerNumber, bool status);
 
+	UFUNCTION(BlueprintCallable)
+	void SetAllPlayersAlive();
+
 
 private:
 	UPROPERTY()
