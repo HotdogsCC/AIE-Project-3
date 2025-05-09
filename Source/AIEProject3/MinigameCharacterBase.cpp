@@ -165,3 +165,12 @@ void AMinigameCharacterBase::Look(const struct FInputActionValue& Value)
 {
 	UE_LOG(LogTemp, Error, TEXT("You need to assign Look not in the character base"));
 }
+
+void AMinigameCharacterBase::Dash(const struct FInputActionValue& Value)
+{
+	//calc a force for bounce
+	FVector DashDirection = GetActorForwardVector() * DashForce * 1000000.0f;
+
+	//set force on this
+	GetCharacterMovement()->AddForce(DashDirection);
+}

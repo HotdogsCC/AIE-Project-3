@@ -102,6 +102,9 @@ void AAIEProject3Character::SetupPlayerInputComponent(UInputComponent* PlayerInp
 
 		// Looking
 		EnhancedInputComponent->BindAction(LookAction, ETriggerEvent::Triggered, this, &AAIEProject3Character::Look);
+
+		// Dash
+		EnhancedInputComponent->BindAction(DashAction, ETriggerEvent::Started, this, &AMinigameCharacterBase::Dash);
 	}
 	else
 	{
