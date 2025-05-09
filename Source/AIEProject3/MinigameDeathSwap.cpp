@@ -173,3 +173,20 @@ void AMinigameDeathSwap::SetPlayerWithSafeGuard(AMinigameCharacterBase* PlayerPo
     }
     
 }
+
+///Called when two players collide
+void AMinigameDeathSwap::PlayerCollision(AMinigameCharacterBase* Character1, AMinigameCharacterBase* Character2)
+{
+    //check that we have legit pointers
+    if (!Character1 || !Character2)
+    {
+        UE_LOG(LogTemp, Warning, TEXT("Null pointer for characters in MinigameDeathSwap PlayerCollision"));
+        return;
+    }
+
+    //if one of the characters are tagged, swap their tag status
+    if (SafeGuardedPlayer == Character1 || SafeGuardedPlayer == Character2)
+    {
+        SafeGuardedPlayer = (SafeGuardedPlayer == Character1) ? Character2 : Character1;
+    }
+}

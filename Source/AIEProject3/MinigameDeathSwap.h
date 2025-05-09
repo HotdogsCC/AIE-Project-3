@@ -40,6 +40,9 @@ public:
 	UPROPERTY(EditDefaultsOnly)
 	TArray<FName> MapNames;
 
+	///Called when two players collide
+	virtual void PlayerCollision(AMinigameCharacterBase* Character1, AMinigameCharacterBase* Character2) override;
+
 protected:
 	// Called when the game starts
 	virtual void BeginPlay() override;
