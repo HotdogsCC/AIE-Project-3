@@ -110,8 +110,22 @@ void AMinigameCharacterBase::NotifyHit(UPrimitiveComponent* HitComp, AActor* Oth
 		//calc a force for bounce
 		FVector FromOtherToThis = GetActorLocation() - OtherCharacter->GetActorLocation();
 		FromOtherToThis.Normalize();
-		FromOtherToThis *= 1000000.0f;
+		FromOtherToThis *= 10000.0f;
 		FromOtherToThis *= Bounciness;
+
+		//add on the forces already present
+
+
+		FVector Player1Vector = GetVelocity();
+		FVector Player2Vector = OtherActor->GetVelocity();
+
+		double Player1Force = Player1Vector.Length();
+		double Player2Force = Player2Vector.Length();
+
+
+		double CombinedForces = Player1Force + Player2Force;
+		FromOtherToThis *= CombinedForces;
+		
 
 		//set force on this
 		GetCharacterMovement()->AddForce(FromOtherToThis);
@@ -164,4 +178,13 @@ void AMinigameCharacterBase::Move(const struct FInputActionValue& Value)
 void AMinigameCharacterBase::Look(const struct FInputActionValue& Value)
 {
 	UE_LOG(LogTemp, Error, TEXT("You need to assign Look not in the character base"));
+}
+
+void AMinigameCharacterBase::Dash(const struct FInputActionValue& Value)
+{
+	//calc a force for bounce
+	FVector DashDirection = GetActorForwardVector() * DashForce * 1000000.0f;
+
+	//set force on this
+	GetCharacterMovement()->AddForce(DashDirection);
 }

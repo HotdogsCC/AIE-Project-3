@@ -16,12 +16,17 @@ public:
 	// Sets default values for this character's properties
 	AMinigameCharacterBase();
 
+	/** Called for dashing input */
+	virtual void Dash(const struct FInputActionValue& Value);
+
 protected:
 	/** Called for movement input */
 	virtual void Move(const struct FInputActionValue& Value);
 
 	/** Called for looking input */ 
 	virtual void Look(const struct FInputActionValue& Value); 
+
+	
 
 	// APawn interface
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
@@ -45,6 +50,10 @@ protected:
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Input, meta = (AllowPrivateAccess = "true"))
 	class UInputAction* LookAction;
 
+	/** Look Input Action */
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Input, meta = (AllowPrivateAccess = "true"))
+	class UInputAction* DashAction;
+
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Ball", meta = (AllowPrivateAccess = "true"))
 	UStaticMeshComponent* BallComponent;
 
@@ -65,6 +74,10 @@ public:
 	//bounce force, set it bp
 	UPROPERTY(EditDefaultsOnly, Category = "Bounce")
 	float Bounciness = 5.0f;
+
+	//dash force, set it bp
+	UPROPERTY(EditDefaultsOnly, Category = "Dash")
+	float DashForce = 10.0f;
 
 	UPROPERTY(EditDefaultsOnly, Category = "Materials")
 	TArray<UMaterialInstance*> CharacterBallMaterials;

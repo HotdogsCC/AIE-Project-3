@@ -38,6 +38,9 @@ void AStaticCamCharacter::SetupPlayerInputComponent(class UInputComponent* Playe
 
 		// Moving
 		EnhancedInputComponent->BindAction(MoveAction, ETriggerEvent::Triggered, this, &AStaticCamCharacter::Move);
+
+		// Dash
+		EnhancedInputComponent->BindAction(DashAction, ETriggerEvent::Started, this, &AMinigameCharacterBase::Dash);
 	}
 	else
 	{
