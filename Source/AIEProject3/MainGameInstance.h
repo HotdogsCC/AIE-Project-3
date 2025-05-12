@@ -50,6 +50,12 @@ public:
 	UFUNCTION(BlueprintCallable)
 	void SetAllPlayersAlive();
 
+	UFUNCTION(BlueprintCallable)
+	FName GetNameOfLevelToLoad();
+
+	UFUNCTION(BlueprintCallable)
+	void SetNameOfLevelToLoad(FName name);
+
 
 private:
 	UPROPERTY()
@@ -64,4 +70,7 @@ private:
 	//Becomes true when all players have joined
 	bool GameReadyToStart = false;
 	bool bIsPlayersAlive[4] = {true, true, true, true};
+
+	//set by the minigame selection
+	FName NameOfLevelToLoad;
 };
