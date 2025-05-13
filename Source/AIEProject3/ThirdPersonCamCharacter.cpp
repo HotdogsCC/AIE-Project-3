@@ -112,8 +112,8 @@ void AThirdPersonCamCharacter::Move(const FInputActionValue& Value)
 		float RotateDelta = Controller->GetCharacter()->GetVelocity().Length() * -0.573248f * UGameplayStatics::GetWorldDeltaSeconds(this);
 		if(BallComponent != nullptr)
 		{
-			FRotator BallRotation;
-			BallRotation.MakeFromEuler({0.0f, RotateDelta, 0.0f});
+			FRotator BallRotation(RotateDelta, 0.0, 0.0);
+			//BallRotation.MakeFromEuler({0.0f, RotateDelta, 0.0f});
 			//Rotate ball mesh
 			BallComponent->AddLocalRotation(BallRotation);
 		}
