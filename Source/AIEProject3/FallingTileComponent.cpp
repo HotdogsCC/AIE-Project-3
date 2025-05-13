@@ -90,12 +90,12 @@ void UFallingTileComponent::TickComponent(float DeltaTime, ELevelTick TickType, 
 	}
 }
 
-void UFallingTileComponent::PostEditChangeProperty(FPropertyChangedEvent& PropertyChangedEvent)
-{
-	Super::PostEditChangeProperty(PropertyChangedEvent);
-	
-	DrawDebugBox();
-}
+//void UFallingTileComponent::PostEditChangeProperty(FPropertyChangedEvent& PropertyChangedEvent)
+//{
+//	Super::PostEditChangeProperty(PropertyChangedEvent);
+//	
+//	DrawDebugBox();
+//}
 
 void UFallingTileComponent::DoSphereTrace()
 {
