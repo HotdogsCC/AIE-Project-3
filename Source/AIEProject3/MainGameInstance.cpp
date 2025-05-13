@@ -123,3 +123,13 @@ void UMainGameInstance::SetAllPlayersAlive()
 		SetIsPlayerAlive(i, true);
 	}
 }
+
+FName UMainGameInstance::GetNameOfLevelToLoad()
+{
+	return NameOfLevelToLoad;
+}
+
+void UMainGameInstance::SetNameOfLevelToLoad(FName name)
+{
+	NameOfLevelToLoad = name;
+}
