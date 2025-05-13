@@ -15,13 +15,13 @@ UFallingTileComponent::UFallingTileComponent()
 	DrawDebugBox();
 }
 
-UFallingTileComponent::~UFallingTileComponent()
-{
-	if(GetWorld())
-	{
-		FlushPersistentDebugLines(GetWorld());
-	}
-}
+//UFallingTileComponent::~UFallingTileComponent()
+//{
+	//if(GetWorld())
+	//{
+		//FlushPersistentDebugLines(GetWorld());
+	//}
+//}
 
 
 // Called when the game starts

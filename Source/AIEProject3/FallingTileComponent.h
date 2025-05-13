@@ -26,7 +26,7 @@ class AIEPROJECT3_API UFallingTileComponent : public UActorComponent
 public:	
 	// Sets default values for this component's properties
 	UFallingTileComponent();
-	~UFallingTileComponent();
+	//~UFallingTileComponent();
 
 protected:
 	// Called when the game starts

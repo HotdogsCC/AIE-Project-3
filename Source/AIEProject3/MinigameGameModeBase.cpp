@@ -33,7 +33,11 @@ void AMinigameGameModeBase::UpdateTimer(float DeltaTime)
 		{
 			TimeLimit = 0;
 		}
-		PopUpWidgetInstance->SetText(FString::FromInt(FMath::CeilToInt(TimeLimit)));
+		if(PopUpWidgetInstance)
+		{
+			PopUpWidgetInstance->SetText(FString::FromInt(FMath::CeilToInt(TimeLimit)));
+		}
+		
 	}
 }
 
@@ -163,7 +167,15 @@ void AMinigameGameModeBase::DeclarePlayer(AMinigameCharacterBase* PlayerPointer)
 	}
 
 	AController* MyPlayer = PlayerPointer->GetController();
+	if(!MyPlayer)
+	{
+		return;
+	}
 	APlayerController* PlayerController = Cast<APlayerController>(MyPlayer);
+	if(!PlayerController)
+	{
+		return;
+	}
 	Players[PlayerController->GetLocalPlayer()->GetControllerId()] = PlayerPointer;
 
 	UE_LOG(LogTemp, Display, TEXT("amazing"));
