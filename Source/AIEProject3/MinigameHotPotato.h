@@ -8,6 +8,7 @@
 
 class ATextRenderActor;
 class AMinigameCharacterBase;
+class APipeTravel;
 /**
  * 
  */
@@ -28,6 +29,8 @@ public:
 	TSubclassOf<ATextRenderActor> TaggedTextBlueprint;
 
 	AActor* TaggedTextActor;
+
+	void AddPipe(APipeTravel* Pipe);
 	
 
 protected:
@@ -40,4 +43,6 @@ private:
 	
 	//Stores a pointer to the player that is currently it
 	AMinigameCharacterBase* TaggedPlayer;
+
+	TArray<APipeTravel*> Pipes;
 };

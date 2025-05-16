@@ -9,6 +9,7 @@
 #include "Engine/TextRenderActor.h"
 #include "MinigameCharacterBase.h"
 #include "MainGameInstance.h"
+#include "PipeTravel.h"
 
 //called on first frame
 void AMinigameHotPotato::BeginPlay()
@@ -92,10 +93,20 @@ void AMinigameHotPotato::Tick(float DeltaTime)
 	//checks if time has run out
 	if(TimeLimit <= 0)
 	{
+		for (int32 i = 0; i < Pipes.Num(); i++) 
+		{
+			if (Pipes[i])
+			{
+				Pipes[i]->SetPlayerDead(Cast<AActor>(TaggedPlayer));
+			}
+		}
+
 		// tell the game mode the tagged player died
 		AController* Controller = TaggedPlayer->GetController();
 		APlayerController* PlayerController = Cast<APlayerController>(Controller);
 		DeclareDeadPlayer(PlayerController->GetLocalPlayer()->GetControllerId());
+
+		
 		
 		//kill the tagged player
 		TaggedPlayer->Destroy();
@@ -130,3 +141,7 @@ void AMinigameHotPotato::PlayerCollision(AMinigameCharacterBase* Character1, AMi
 	}
 }
 
+void AMinigameHotPotato::AddPipe(APipeTravel* Pipe) 
+{
+	Pipes.Add(Pipe);
+}

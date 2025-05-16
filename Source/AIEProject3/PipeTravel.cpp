@@ -3,11 +3,35 @@
 
 #include "PipeTravel.h"
 #include "Engine/TargetPoint.h"
+#include "Kismet/GameplayStatics.h"
+#include "MinigameHotPotato.h"
 
 APipeTravel::APipeTravel()
 {
 	//make it so the actor actually ticks
 	PrimaryActorTick.bCanEverTick = true;
+}
+
+void APipeTravel::BeginPlay()
+{
+	Super::BeginPlay();
+
+	//get game mode
+	AGameModeBase* BaseGameMode = UGameplayStatics::GetGameMode(this);
+	if (!BaseGameMode)
+	{
+		return;
+	}
+
+	//cast to hot potato game mode
+	AMinigameHotPotato* GameMode = Cast<AMinigameHotPotato>(BaseGameMode);
+	if (!GameMode)
+	{
+		return;
+	}
+
+	//tell the hot potato game mode that this pipe exists, so it can delete dead players
+	GameMode->AddPipe(this);
 }
 
 //every frame
@@ -107,4 +131,18 @@ void APipeTravel::Travel(float DeltaTime)
 		}
 	}
 	
+}
+
+void APipeTravel::SetPlayerDead(AActor* InCharacter)
+{
+	UE_LOG(LogTemp, Display, TEXT("I, the pipe, have run the Set Player Dead function"));
+	for (int32 i = 0; i < 4; i++)
+	{
+		if (InCharacter == Players[i])
+		{
+			UE_LOG(LogTemp, Display, TEXT("I found a player which should be dead!!!!"));
+			Players[i] = nullptr;
+			return;
+		}
+	}
 }

@@ -39,7 +39,11 @@ public:
 	UPROPERTY(EditInstanceOnly)
 	float EjectForce = 1.0f;
 
-	void SetPlayerDead(uint8 playerIndex) { Players[playerIndex] = nullptr; }
+	void SetPlayerDead(AActor* InCharacter);
+
+protected:
+	// Called when the game starts
+	virtual void BeginPlay() override;
 
 private:
 	//runs when travelling
