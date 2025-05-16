@@ -182,9 +182,22 @@ void AMinigameCharacterBase::Look(const struct FInputActionValue& Value)
 
 void AMinigameCharacterBase::Dash(const struct FInputActionValue& Value)
 {
-	//calc a force for bounce
-	FVector DashDirection = GetActorForwardVector() * DashForce * 1000000.0f;
+	if (bCanDash)
+	{
+		//say that we can no longer dash
+		bCanDash = false;
 
-	//set force on this
-	GetCharacterMovement()->AddForce(DashDirection);
+		//start timer to reset dash
+		GetWorld()->GetTimerManager().SetTimer(DashResetTimer, 
+			this, 
+			&AMinigameCharacterBase::ResetCanDash,
+			0.5f); 
+
+		//calc a force for bounce
+		FVector DashDirection = GetActorForwardVector() * DashForce * 1000000.0f;
+
+		//set force on this
+		GetCharacterMovement()->AddForce(DashDirection);
+	}
+	
 }

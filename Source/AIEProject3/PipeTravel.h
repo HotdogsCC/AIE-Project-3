@@ -39,6 +39,8 @@ public:
 	UPROPERTY(EditInstanceOnly)
 	float EjectForce = 1.0f;
 
+	void SetPlayerDead(uint8 playerIndex) { Players[playerIndex] = nullptr; }
+
 private:
 	//runs when travelling
 	void Travel(float DeltaTime);

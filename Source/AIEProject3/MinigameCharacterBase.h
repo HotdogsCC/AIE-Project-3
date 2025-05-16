@@ -62,6 +62,8 @@ protected:
 	FTimerHandle BounceResetTimer;
 	void ResetBounce();
 
+	FTimerHandle DashResetTimer;
+
 	int temp = 0;
 
 public:	
@@ -84,4 +86,12 @@ public:
 
 	//used by other actor to see if it should bounce
 	bool GetShouldBounce() const { return bShouldBounce; }
+
+private:
+	bool bCanDash = true;
+public:
+	void ResetCanDash() { bCanDash = true; }
+
+
+
 };
