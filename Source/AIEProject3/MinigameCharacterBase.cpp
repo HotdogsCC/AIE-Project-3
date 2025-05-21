@@ -219,6 +219,9 @@ void AMinigameCharacterBase::Dash(const struct FInputActionValue& Value)
 		float downForce = GetCharacterMovement()->GetCurrentAcceleration().Z;
 		FVector upForce(0, 0, -downForce);
 		GetCharacterMovement()->AddForce(upForce);
+
+		//plays dash sound
+		UGameplayStatics::PlaySound2D(this, DashSound);
 	}
 	
 }
