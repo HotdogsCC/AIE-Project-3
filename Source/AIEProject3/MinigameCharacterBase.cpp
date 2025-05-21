@@ -174,6 +174,9 @@ void AMinigameCharacterBase::NotifyHit(UPrimitiveComponent* HitComp, AActor* Oth
 			//tell the minigame a collision occured
 			MinigameGameMode->PlayerCollision(this, OtherCharacter);
 
+			//play a bounce sound
+			UGameplayStatics::PlaySound2D(this, BounceSound);
+
 		}
 	}
 
