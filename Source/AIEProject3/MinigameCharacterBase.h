@@ -84,6 +84,9 @@ public:
 	UPROPERTY(EditDefaultsOnly, Category = "Materials")
 	TArray<UMaterialInstance*> CharacterBallMaterials;
 
+	UPROPERTY(EditDefaultsOnly, Category = "Sounds")
+	USoundBase* JumpSound;
+
 	//used by other actor to see if it should bounce
 	bool GetShouldBounce() const { return bShouldBounce; }
 

@@ -73,6 +73,19 @@ void AMinigameCharacterBase::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 
+	//runs when the player jumps
+	if(bWasJumping)
+	{
+		//check there is a jump sound to play
+		{
+			if(JumpSound)
+			{
+				//play the jump sound effect
+				UGameplayStatics::PlaySound2D(this, JumpSound);
+			}
+		}
+	}
+
 }
 
 // Called to bind functionality to input
