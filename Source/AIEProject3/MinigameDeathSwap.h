@@ -55,5 +55,12 @@ private:
 	AMinigameCharacterBase* SafeGuardedPlayer = nullptr;
 
 	void ProcessSafeGuard();
+
+	//the sound to play when swapping is about to begin
+	UPROPERTY(EditDefaultsOnly, Category="Sounds", meta=(AllowPrivateAccess=true))
+	USoundBase* SwapSound;
+
+	//stops double plays
+	bool bHasSoundPlayed = false;
 	
 };

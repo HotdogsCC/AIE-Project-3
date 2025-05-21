@@ -4,6 +4,7 @@
 #include "FallingTileComponent.h"
 #include "GameFramework/Character.h"
 #include "Engine/HitResult.h"
+#include "Kismet/GameplayStatics.h"
 
 // Sets default values for this component's properties
 UFallingTileComponent::UFallingTileComponent()
@@ -313,4 +314,7 @@ void UFallingTileComponent::OnOverlapBegin(UPrimitiveComponent* OverlappedCompon
 void UFallingTileComponent::BeginFall()
 {
 	bShouldFall = true;
+	
+	//plays break sound
+	UGameplayStatics::PlaySound2D(this, BreakSound);
 }

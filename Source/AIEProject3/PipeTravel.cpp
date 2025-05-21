@@ -81,6 +81,9 @@ void APipeTravel::Travel(float DeltaTime)
 		//temp fix that teleports player straight to the first target point
 		if (TargetIndexs[i] == 0)
 		{
+			//play pipe enter sound
+			UGameplayStatics::PlaySound2D(this, EnterSound);
+			
 			ATargetPoint* TargetPoint = Targets[TargetIndexs[i]];
 			FVector TargetLocation = TargetPoint->GetActorLocation();
 			Players[i]->SetActorLocation(TargetLocation);
@@ -121,6 +124,9 @@ void APipeTravel::Travel(float DeltaTime)
 				Eject(Players[i], DirectionVector, EjectForce); //blueprint function
 				Players[i] = nullptr;
 				TargetIndexs[i] = -1;
+
+				//play pipe exit sound
+				UGameplayStatics::PlaySound2D(this, ExitSound);
 			}
 		}
 		else

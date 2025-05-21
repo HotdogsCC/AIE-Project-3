@@ -113,4 +113,8 @@ private:
 	//draws a debug box
 	void DrawDebugBox();
 
+	//the sound to play when the tile starts falling
+	UPROPERTY(EditDefaultsOnly, Category="Sounds", meta=(AllowPrivateAccess=true))
+	USoundBase* BreakSound;
+
 };

@@ -73,6 +73,19 @@ void AMinigameCharacterBase::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 
+	//runs when the player jumps
+	if(bWasJumping)
+	{
+		//check there is a jump sound to play
+		{
+			if(JumpSound)
+			{
+				//play the jump sound effect
+				UGameplayStatics::PlaySound2D(this, JumpSound);
+			}
+		}
+	}
+
 }
 
 // Called to bind functionality to input
@@ -161,6 +174,9 @@ void AMinigameCharacterBase::NotifyHit(UPrimitiveComponent* HitComp, AActor* Oth
 			//tell the minigame a collision occured
 			MinigameGameMode->PlayerCollision(this, OtherCharacter);
 
+			//play a bounce sound
+			UGameplayStatics::PlaySound2D(this, BounceSound);
+
 		}
 	}
 
@@ -198,6 +214,17 @@ void AMinigameCharacterBase::Dash(const struct FInputActionValue& Value)
 
 		//set force on this
 		GetCharacterMovement()->AddForce(DashDirection);
+
+		//reset Z velocity to 0
+		GetCharacterMovement()->Velocity.Z = 0.0;
+		
+		//pushs character up as much as it was going down
+		float downForce = GetCharacterMovement()->GetCurrentAcceleration().Z;
+		FVector upForce(0, 0, -downForce);
+		GetCharacterMovement()->AddForce(upForce);
+
+		//plays dash sound
+		UGameplayStatics::PlaySound2D(this, DashSound);
 	}
 	
 }
