@@ -198,6 +198,14 @@ void AMinigameCharacterBase::Dash(const struct FInputActionValue& Value)
 
 		//set force on this
 		GetCharacterMovement()->AddForce(DashDirection);
+
+		//reset Z velocity to 0
+		GetCharacterMovement()->Velocity.Z = 0.0;
+		
+		//pushs character up as much as it was going down
+		float downForce = GetCharacterMovement()->GetCurrentAcceleration().Z;
+		FVector upForce(0, 0, -downForce);
+		GetCharacterMovement()->AddForce(upForce);
 	}
 	
 }
