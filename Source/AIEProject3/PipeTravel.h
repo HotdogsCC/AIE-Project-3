@@ -54,4 +54,10 @@ private:
 
 	//index to the target the player should be moving to
 	int32 TargetIndexs[4] = {-1, -1, -1, -1};
+
+	UPROPERTY(EditDefaultsOnly, Category="Sounds", meta=(AllowPrivateAccess=true))
+	USoundBase* EnterSound;
+
+	UPROPERTY(EditDefaultsOnly, Category="Sounds", meta=(AllowPrivateAccess=true))
+	USoundBase* ExitSound;
 };

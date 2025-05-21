@@ -44,5 +44,20 @@ private:
 	//Stores a pointer to the player that is currently it
 	AMinigameCharacterBase* TaggedPlayer;
 
+	//stores all of the locations along a pipe
 	TArray<APipeTravel*> Pipes;
+
+	//bomb ticking, low stress
+	UPROPERTY(EditDefaultsOnly, Category="Sounds", meta=(AllowPrivateAccess=true))
+	USoundBase* BombTickSound;
+
+	//bomb ticking, high stress
+	UPROPERTY(EditDefaultsOnly, Category="Sounds", meta=(AllowPrivateAccess=true))
+	USoundBase* FastBombTickSound;
+
+	//current instance of bomb tick playback
+	UAudioComponent* TickSoundPlayback = nullptr;
+
+	//prevents lots of sounds
+	bool bFastSoundHasPlayed = false;
 };

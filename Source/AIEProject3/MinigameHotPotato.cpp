@@ -10,6 +10,7 @@
 #include "MinigameCharacterBase.h"
 #include "MainGameInstance.h"
 #include "PipeTravel.h"
+#include "Components/AudioComponent.h"
 
 //called on first frame
 void AMinigameHotPotato::BeginPlay()
@@ -30,6 +31,14 @@ void AMinigameHotPotato::BeginPlay()
 	TaggedTextActor = GetWorld()->SpawnActor(TaggedTextBlueprint);
 	
 	AssignTagged();
+
+	//plays the ticking sound
+	TickSoundPlayback = UGameplayStatics::CreateSound2D(this, BombTickSound);
+	if(TickSoundPlayback)
+	{
+		TickSoundPlayback->Play();
+	}
+	
 	
 }
 
@@ -90,36 +99,62 @@ void AMinigameHotPotato::Tick(float DeltaTime)
 	const FVector PlayerLocation = TaggedPlayer->GetActorLocation();
 	TaggedTextActor->SetActorLocation(PlayerLocation);
 
-	//checks if time has run out
-	if(TimeLimit <= 0)
+	if(TimeLimit <= 5)
 	{
-		for (int32 i = 0; i < Pipes.Num(); i++) 
+		if(!bFastSoundHasPlayed)
 		{
-			if (Pipes[i])
+			bFastSoundHasPlayed = true;
+			//plays fast scary sound
+			UGameplayStatics::PlaySound2D(this, FastBombTickSound);
+
+			//stops the other ticking sound
+			if(TickSoundPlayback)
 			{
-				Pipes[i]->SetPlayerDead(Cast<AActor>(TaggedPlayer));
+				TickSoundPlayback->Stop();
+			}
+			
+		}
+		//checks if time has run out
+		if(TimeLimit <= 0)
+		{
+			for (int32 i = 0; i < Pipes.Num(); i++) 
+			{
+				if (Pipes[i])
+				{
+					Pipes[i]->SetPlayerDead(Cast<AActor>(TaggedPlayer));
+				}
+			}
+
+			// tell the game mode the tagged player died
+			AController* Controller = TaggedPlayer->GetController();
+			APlayerController* PlayerController = Cast<APlayerController>(Controller);
+			DeclareDeadPlayer(PlayerController->GetLocalPlayer()->GetControllerId());
+
+		
+		
+			//kill the tagged player
+			TaggedPlayer->Destroy();
+			TaggedPlayer = nullptr;
+
+			//tell the tagged text actor to fuck off
+			FVector MiddleOfNowhere(0.0f, 0.0f, -99999.0f);
+			TaggedTextActor->SetActorLocation(MiddleOfNowhere);
+
+			//reset for another round
+			TimeLimit = InitTimeLimit;
+			AssignTagged();
+
+			//plays the ticking sound
+			TickSoundPlayback = UGameplayStatics::CreateSound2D(this, BombTickSound);
+			if(TickSoundPlayback)
+			{
+				bFastSoundHasPlayed = false;
+				TickSoundPlayback->Play();
 			}
 		}
-
-		// tell the game mode the tagged player died
-		AController* Controller = TaggedPlayer->GetController();
-		APlayerController* PlayerController = Cast<APlayerController>(Controller);
-		DeclareDeadPlayer(PlayerController->GetLocalPlayer()->GetControllerId());
-
-		
-		
-		//kill the tagged player
-		TaggedPlayer->Destroy();
-		TaggedPlayer = nullptr;
-
-		//tell the tagged text actor to fuck off
-		FVector MiddleOfNowhere(0.0f, 0.0f, -99999.0f);
-		TaggedTextActor->SetActorLocation(MiddleOfNowhere);
-
-		//reset for another round
-		TimeLimit = InitTimeLimit;
-		AssignTagged();
 	}
+	
+	
 	
 }
 
