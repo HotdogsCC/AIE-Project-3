@@ -31,10 +31,17 @@ void AMinigameDeathSwap::Tick(float DeltaTime)
 {
     Super::Tick(DeltaTime);
 
+    if(TimeLimit <= 1.5f && !bHasSoundPlayed)
+    {
+        bHasSoundPlayed = true;
+        UGameplayStatics::PlaySound2D(this, SwapSound);
+    }
+    
     if(TimeLimit == 0)
     {
         SwapPlayers(InitialNumOfPlayers);
         TimeLimit = InitTimeLimit;
+        bHasSoundPlayed = false;
     }
 
     if (SafeGuardedPlayer && SafeGuardTextActor)
