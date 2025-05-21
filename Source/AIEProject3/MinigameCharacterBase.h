@@ -87,6 +87,9 @@ public:
 	UPROPERTY(EditDefaultsOnly, Category = "Sounds")
 	USoundBase* JumpSound;
 
+	UPROPERTY(EditDefaultsOnly, Category = "Sounds")
+	USoundBase* DashSound;
+
 	//used by other actor to see if it should bounce
 	bool GetShouldBounce() const { return bShouldBounce; }
 
