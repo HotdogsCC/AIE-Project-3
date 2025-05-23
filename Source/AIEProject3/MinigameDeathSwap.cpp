@@ -63,7 +63,7 @@ void AMinigameDeathSwap::Tick(float DeltaTime)
                 {
                     //gives that player a win
                     GameInstance->AddPlayerWin(i);
-                    UGameplayStatics::OpenLevel(this, FName("MinigameSelection"));
+                    UGameplayStatics::OpenLevel(this, FName("BetweenMinigames"));
                     return;
                 }
             }
@@ -79,7 +79,7 @@ void AMinigameDeathSwap::Tick(float DeltaTime)
             UGameplayStatics::OpenLevel(this, FName("WG_3Death_Swap_MIni-game"));
             break;
         case 1:
-            UGameplayStatics::OpenLevel(this, FName("MinigameSelection"));
+            UGameplayStatics::OpenLevel(this, FName("BetweenMinigames"));
         default:
             UGameplayStatics::OpenLevel(this, FName("TitleScreen"));
             break;
