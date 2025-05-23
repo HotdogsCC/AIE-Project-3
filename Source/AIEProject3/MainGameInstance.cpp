@@ -16,6 +16,7 @@ uint8 UMainGameInstance::GetPlayerWins(const uint8 PlayerNum) const
 void UMainGameInstance::AddPlayerWin(const uint8 PlayerNum)
 {
 	PlayerWins[PlayerNum]++;
+	PlayerWhoWonIndex = PlayerNum;
 }
 
 //Prints the name of each level stored in the Game Instance
@@ -116,6 +117,11 @@ void UMainGameInstance::LoadMinigameSelection()
 	UGameplayStatics::OpenLevel(this, FName("MinigameSelection"));
 }
 
+void UMainGameInstance::LoadWinScreen()
+{
+	UGameplayStatics::OpenLevel(this, FName("BetweenMinigames"));
+}
+
 void UMainGameInstance::SetAllPlayersAlive()
 {
 	for (uint8 i = 0; i < 4; i++)
@@ -132,4 +138,9 @@ FName UMainGameInstance::GetNameOfLevelToLoad()
 void UMainGameInstance::SetNameOfLevelToLoad(FName name)
 {
 	NameOfLevelToLoad = name;
+}
+
+uint8 UMainGameInstance::GetPlayerWhoWonIndex()
+{
+	return PlayerWhoWonIndex;
 }

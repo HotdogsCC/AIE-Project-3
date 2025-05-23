@@ -142,10 +142,13 @@ void AMinigameGameModeBase::PlayerWon(uint8 PlayerNum)
 	if (GameInstance)
 	{
 		GameInstance->AddPlayerWin(PlayerNum);
+		//go to win screen
+		GameInstance->LoadWinScreen();
 	}
 
-	//retrun back to minigame selection
-	GameInstance->LoadMinigameSelection();
+	
+
+	//GameInstance->LoadMinigameSelection();
 
 }
 
