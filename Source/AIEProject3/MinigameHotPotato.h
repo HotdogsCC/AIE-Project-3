@@ -26,7 +26,10 @@ public:
 
 	//The blueprint of the text asset
 	UPROPERTY(EditDefaultsOnly)
-	TSubclassOf<ATextRenderActor> TaggedTextBlueprint;
+	TSubclassOf<AActor> TaggedTextBlueprint;
+	//The blueprint of the text asset
+	UPROPERTY(EditDefaultsOnly)
+	TSubclassOf<AActor> TaggedTextBlueprintFast;
 
 	AActor* TaggedTextActor;
 
