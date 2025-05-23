@@ -32,6 +32,9 @@ public:
 	void LoadMinigameSelection();
 
 	UFUNCTION(BlueprintCallable)
+	void LoadWinScreen();
+
+	UFUNCTION(BlueprintCallable)
 	void PlayerJoined(uint8 PlayerNum);
 
 	UFUNCTION(BlueprintCallable)
@@ -56,6 +59,9 @@ public:
 	UFUNCTION(BlueprintCallable)
 	void SetNameOfLevelToLoad(FName name);
 
+	UFUNCTION(BlueprintCallable)
+	uint8 GetPlayerWhoWonIndex();
+
 
 private:
 	UPROPERTY()
@@ -73,4 +79,7 @@ private:
 
 	//set by the minigame selection
 	FName NameOfLevelToLoad;
+
+	//stores who won
+	uint8 PlayerWhoWonIndex = 10;
 };
