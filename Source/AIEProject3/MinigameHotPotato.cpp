@@ -112,6 +112,11 @@ void AMinigameHotPotato::Tick(float DeltaTime)
 			{
 				TickSoundPlayback->Stop();
 			}
+
+			//changes the flashing actor
+			TaggedTextActor->Destroy();
+			TaggedTextActor = GetWorld()->SpawnActor(TaggedTextBlueprintFast);
+
 			
 		}
 		//checks if time has run out
@@ -139,6 +144,10 @@ void AMinigameHotPotato::Tick(float DeltaTime)
 			//tell the tagged text actor to fuck off
 			FVector MiddleOfNowhere(0.0f, 0.0f, -99999.0f);
 			TaggedTextActor->SetActorLocation(MiddleOfNowhere);
+
+			//changes the flashing actor
+			TaggedTextActor->Destroy();
+			TaggedTextActor = GetWorld()->SpawnActor(TaggedTextBlueprint);
 
 			//reset for another round
 			TimeLimit = InitTimeLimit;
