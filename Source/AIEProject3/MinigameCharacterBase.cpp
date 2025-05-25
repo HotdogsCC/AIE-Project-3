@@ -9,6 +9,7 @@
 #include "GameFramework/CharacterMovementComponent.h"
 #include "Kismet/GameplayStatics.h"
 #include "MinigameGameModeBase.h"
+#include "UObject/UnrealTypePrivate.h"
 
 // Sets default values
 AMinigameCharacterBase::AMinigameCharacterBase()
@@ -226,5 +227,12 @@ void AMinigameCharacterBase::Dash(const struct FInputActionValue& Value)
 		//plays dash sound
 		UGameplayStatics::PlaySound2D(this, DashSound);
 	}
+
 	
+	
+}
+
+void AMinigameCharacterBase::Jump()
+{
+	Super::Jump();
 }
