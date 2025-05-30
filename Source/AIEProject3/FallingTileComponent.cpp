@@ -317,4 +317,19 @@ void UFallingTileComponent::BeginFall()
 	
 	//plays break sound
 	UGameplayStatics::PlaySound2D(this, BreakSound);
+
+	//tells the camera to not block the tiles
+	if (GetOwner() == nullptr)
+	{
+		return;
+	}
+
+	UStaticMeshComponent* StaticMesh = Cast<UStaticMeshComponent>(
+		GetOwner()->GetComponentByClass(UStaticMeshComponent::StaticClass()));
+
+	if (StaticMesh)
+	{
+		StaticMesh->SetCollisionResponseToChannel(ECC_Camera, ECR_Ignore);
+	}
+	
 }
