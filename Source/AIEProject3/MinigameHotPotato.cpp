@@ -29,6 +29,16 @@ void AMinigameHotPotato::BeginPlay()
 
 	//spawns the tagged text into the world
 	TaggedTextActor = GetWorld()->SpawnActor(TaggedTextBlueprint);
+
+	const FVector MiddleOfNowhere(9999, 9999, 9999);
+	
+	//spawns all of the highlights into the world
+	for (int32 i = 0; i < 4; i++)
+	{
+		AActor* Highlight = GetWorld()->SpawnActor(PlayerHighlightBP);
+		Highlight->SetActorLocation(MiddleOfNowhere);
+		PlayerHighlighters.Add(Highlight);
+	}
 	
 	AssignTagged();
 
@@ -188,4 +198,9 @@ void AMinigameHotPotato::PlayerCollision(AMinigameCharacterBase* Character1, AMi
 void AMinigameHotPotato::AddPipe(APipeTravel* Pipe) 
 {
 	Pipes.Add(Pipe);
+}
+
+AActor* AMinigameHotPotato::GetPlayerHighlighter(int32 i) const
+{
+	return PlayerHighlighters[i];
 }

@@ -5,6 +5,7 @@
 #include "Engine/TargetPoint.h"
 #include "Kismet/GameplayStatics.h"
 #include "MinigameHotPotato.h"
+#include "GameFramework/Character.h"
 
 APipeTravel::APipeTravel()
 {
@@ -108,11 +109,36 @@ void APipeTravel::Travel(float DeltaTime)
 		DirectionVector.Normalize();
 		DirectionVector = DirectionVector * TravelSpeed * DeltaTime;
 
+		//get game mode
+		AGameModeBase* BaseGameMode = UGameplayStatics::GetGameMode(this);
+		if (!BaseGameMode)
+		{
+			return;
+		}
+
+		//cast to hot potato game mode
+		AMinigameHotPotato* GameMode = Cast<AMinigameHotPotato>(BaseGameMode);
+		if (!GameMode)
+		{
+			return;
+		}
+
+		//get the player highlighter
+		ACharacter* InChar = Cast<ACharacter>(Players[i]);
+		AController* Controller = InChar->GetController();
+		APlayerController* PlayerController = Cast<APlayerController>(Controller);
+		int32 playerIndex = PlayerController->GetLocalPlayer()->GetControllerId();
+
+		AActor* PlayerHighlighter = GameMode->GetPlayerHighlighter(playerIndex);
+
 		//checks if player is at the target location
 		if (DirectionVector.Length() >= DistanceToTarget)
 		{
 			//set player location to the target
 			Players[i]->SetActorLocation(TargetLocation);
+
+			//move highlighter to new pos
+			PlayerHighlighter->SetActorLocation(Players[i]->GetActorLocation());
 
 			//increment target index
 			TargetIndexs[i]++;
@@ -120,6 +146,10 @@ void APipeTravel::Travel(float DeltaTime)
 			//if there are no more targets to travel to, eject
 			if (TargetIndexs[i] >= Targets.Num())
 			{
+
+				FVector MiddleOfNowhere(9999, 9999, 9999);
+				PlayerHighlighter->SetActorLocation(MiddleOfNowhere);
+
 				DirectionVector.Normalize();
 				Eject(Players[i], DirectionVector, EjectForce); //blueprint function
 				Players[i] = nullptr;
@@ -134,7 +164,12 @@ void APipeTravel::Travel(float DeltaTime)
 			//set player location to move closer to target
 			FVector NewPosition = CurrentLocation + DirectionVector;
 			Players[i]->SetActorLocation(NewPosition);
+
+			//move highlighter to new pos
+			PlayerHighlighter->SetActorLocation(Players[i]->GetActorLocation());
 		}
+
+		
 	}
 	
 }
@@ -147,6 +182,34 @@ void APipeTravel::SetPlayerDead(AActor* InCharacter)
 		if (InCharacter == Players[i])
 		{
 			UE_LOG(LogTemp, Display, TEXT("I found a player which should be dead!!!!"));
+
+			//get game mode
+			AGameModeBase* BaseGameMode = UGameplayStatics::GetGameMode(this);
+			if (!BaseGameMode)
+			{
+				return;
+			}
+
+			//cast to hot potato game mode
+			AMinigameHotPotato* GameMode = Cast<AMinigameHotPotato>(BaseGameMode);
+			if (!GameMode)
+			{
+				return;
+			}
+
+			
+			//get the player highlighter
+			ACharacter* InChar = Cast<ACharacter>(Players[i]);
+			AController* Controller = InChar->GetController();
+			APlayerController* PlayerController = Cast<APlayerController>(Controller);
+			int32 playerIndex = PlayerController->GetLocalPlayer()->GetControllerId();
+
+			AActor* PlayerHighlighter = GameMode->GetPlayerHighlighter(playerIndex);
+
+			//move the highlighter to the middle of nowhere positiion
+			FVector MiddleOfNowhere(9999, 9999, 9999);
+			PlayerHighlighter->SetActorLocation(MiddleOfNowhere);
+
 			Players[i] = nullptr;
 			return;
 		}
