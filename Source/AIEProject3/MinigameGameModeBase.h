@@ -15,6 +15,7 @@ enum class FEndMode : uint8 {
 	LASTPLAYER = 0 UMETA(DisplayName = "LASTPLAYER"),
 	TIMER = 1 UMETA(DisplayName = "TIMER"),
 	OBJECTIVE = 2 UMETA(DisplayName = "OBJECTIVE"),
+	TUTORIAL = 3 UMETA(DisplayName = "TUTORIAL"),
 	OTHER = 255 UMETA(DisplayName = "OTHER")
 };
 
