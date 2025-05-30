@@ -130,6 +130,29 @@ void AMinigameGameModeBase::DeclareDeadPlayer(uint8 PlayerNum)
 			PlayerWon(PlayerIndexAlive);
 		}
 	}
+
+	if (EndMode == FEndMode::TUTORIAL)
+	{
+		//checks to see which player is alive
+		uint8 PlayersAlive = 0;
+		uint8 PlayerIndexAlive = -1;
+		for (uint8 i = 0; i < 4; i++)
+		{
+			//if the player is alive
+			if (GameInstance->IsPlayerAlive(i))
+			{
+				PlayersAlive++;
+				PlayerIndexAlive = i;
+			}
+		}
+
+		//If no one is alive
+		if (PlayersAlive == 0)
+		{
+			//tutorial end
+			UGameplayStatics::OpenLevel(this, "MinigameSelection");
+		}
+	}
 	
 }
 

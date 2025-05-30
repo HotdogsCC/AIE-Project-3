@@ -64,8 +64,9 @@ void UMainGameInstance::PlayerJoined(uint8 PlayerNum)
 
 	if(GameReadyToStart)
 	{
-		LoadMinigameSelection();
+		//LoadMinigameSelection();
 		//LoadRandomMinigame();
+		UGameplayStatics::OpenLevel(this, FName("TUT"));
 	}
 	
 }
