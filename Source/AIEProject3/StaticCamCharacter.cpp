@@ -41,6 +41,9 @@ void AStaticCamCharacter::SetupPlayerInputComponent(class UInputComponent* Playe
 
 		// Dash
 		EnhancedInputComponent->BindAction(DashAction, ETriggerEvent::Started, this, &AMinigameCharacterBase::Dash);
+
+		// Pause
+		EnhancedInputComponent->BindAction(PauseAction, ETriggerEvent::Started, this, &AMinigameCharacterBase::ReturnToSelection); 
 	}
 	else
 	{

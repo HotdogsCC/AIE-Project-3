@@ -236,3 +236,8 @@ void AMinigameCharacterBase::Jump()
 {
 	Super::Jump();
 }
+
+void AMinigameCharacterBase::ReturnToSelection(const struct FInputActionValue& Value)
+{
+	UGameplayStatics::OpenLevel(this, "MinigameSelection");
+}

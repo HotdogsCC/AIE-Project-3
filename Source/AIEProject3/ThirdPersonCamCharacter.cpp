@@ -81,6 +81,9 @@ void AThirdPersonCamCharacter::SetupPlayerInputComponent(UInputComponent* Player
 
 		// Dash
 		EnhancedInputComponent->BindAction(DashAction, ETriggerEvent::Started, this, &AMinigameCharacterBase::Dash);
+
+		// Pause
+		EnhancedInputComponent->BindAction(PauseAction, ETriggerEvent::Started, this, &AMinigameCharacterBase::ReturnToSelection);
 	}
 	else
 	{

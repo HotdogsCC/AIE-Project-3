@@ -54,6 +54,10 @@ protected:
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Input, meta = (AllowPrivateAccess = "true"))
 	class UInputAction* DashAction;
 
+	/** Pause Input Action */
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Input, meta = (AllowPrivateAccess = "true"))
+	class UInputAction* PauseAction;
+
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Ball", meta = (AllowPrivateAccess = "true"))
 	UStaticMeshComponent* BallComponent;
 
@@ -71,6 +75,9 @@ public:
 	virtual void Tick(float DeltaTime) override;
 
 	virtual void Jump() override;
+
+	UFUNCTION()
+	void ReturnToSelection(const struct FInputActionValue& Value);
 
 	UFUNCTION()
 	void NotifyHit(UPrimitiveComponent* HitComp, AActor* OtherActor, UPrimitiveComponent* OtherComp, FVector NormalImpulse, const FHitResult& Hit);
