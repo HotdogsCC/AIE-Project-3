@@ -34,6 +34,8 @@ public:
 	AActor* TaggedTextActor;
 
 	void AddPipe(APipeTravel* Pipe);
+
+	AActor* GetPlayerHighlighter(int32 i) const;
 	
 
 protected:
@@ -57,6 +59,13 @@ private:
 	//bomb ticking, high stress
 	UPROPERTY(EditDefaultsOnly, Category="Sounds", meta=(AllowPrivateAccess=true))
 	USoundBase* FastBombTickSound;
+
+	//the outline object that needs to move with the player to highlight 
+	UPROPERTY(EditDefaultsOnly, Category = "Minigame Hot Potato", meta = (AllowPrivateAccess = true))
+	TSubclassOf<AActor> PlayerHighlightBP;
+
+	//a list for all of the highlights
+	TArray<AActor*> PlayerHighlighters;
 
 	//current instance of bomb tick playback
 	UAudioComponent* TickSoundPlayback = nullptr;
