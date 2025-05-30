@@ -105,6 +105,9 @@ void AAIEProject3Character::SetupPlayerInputComponent(UInputComponent* PlayerInp
 
 		// Dash
 		EnhancedInputComponent->BindAction(DashAction, ETriggerEvent::Started, this, &AMinigameCharacterBase::Dash);
+
+		// Pause
+		EnhancedInputComponent->BindAction(PauseAction, ETriggerEvent::Started, this, &AMinigameCharacterBase::ReturnToSelection);
 	}
 	else
 	{
