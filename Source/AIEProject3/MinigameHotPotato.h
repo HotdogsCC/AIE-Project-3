@@ -35,6 +35,7 @@ public:
 
 	void AddPipe(APipeTravel* Pipe);
 
+	//returns the player highlighter object bound to a player
 	AActor* GetPlayerHighlighter(int32 i) const;
 	
 
@@ -61,8 +62,14 @@ private:
 	USoundBase* FastBombTickSound;
 
 	//the outline object that needs to move with the player to highlight 
-	UPROPERTY(EditDefaultsOnly, Category = "Minigame Hot Potato", meta = (AllowPrivateAccess = true))
-	TSubclassOf<AActor> PlayerHighlightBP;
+	UPROPERTY(EditDefaultsOnly, Category = "Highlights", meta = (AllowPrivateAccess = true))
+	TSubclassOf<AActor> PlayerHighlightBP0;
+	UPROPERTY(EditDefaultsOnly, Category = "Highlights", meta = (AllowPrivateAccess = true))
+	TSubclassOf<AActor> PlayerHighlightBP1;
+	UPROPERTY(EditDefaultsOnly, Category = "Highlights", meta = (AllowPrivateAccess = true))
+	TSubclassOf<AActor> PlayerHighlightBP2;
+	UPROPERTY(EditDefaultsOnly, Category = "Highlights", meta = (AllowPrivateAccess = true))
+	TSubclassOf<AActor> PlayerHighlightBP3;
 
 	//a list for all of the highlights
 	TArray<AActor*> PlayerHighlighters;
