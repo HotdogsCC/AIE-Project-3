@@ -31,13 +31,21 @@ void AMinigameHotPotato::BeginPlay()
 	TaggedTextActor = GetWorld()->SpawnActor(TaggedTextBlueprint);
 
 	const FVector MiddleOfNowhere(9999, 9999, 9999);
+
+	//spawns all highlighter objects
+	AActor* Highlight = GetWorld()->SpawnActor(PlayerHighlightBP0);
+	PlayerHighlighters.Add(Highlight);
+	Highlight = GetWorld()->SpawnActor(PlayerHighlightBP1);
+	PlayerHighlighters.Add(Highlight);
+	Highlight = GetWorld()->SpawnActor(PlayerHighlightBP2);
+	PlayerHighlighters.Add(Highlight);
+	Highlight = GetWorld()->SpawnActor(PlayerHighlightBP3);
+	PlayerHighlighters.Add(Highlight);
 	
 	//spawns all of the highlights into the world
 	for (int32 i = 0; i < 4; i++)
 	{
-		AActor* Highlight = GetWorld()->SpawnActor(PlayerHighlightBP);
-		Highlight->SetActorLocation(MiddleOfNowhere);
-		PlayerHighlighters.Add(Highlight);
+		PlayerHighlighters[i]->SetActorLocation(MiddleOfNowhere);
 	}
 	
 	AssignTagged();
