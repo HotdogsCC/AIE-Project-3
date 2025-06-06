@@ -38,6 +38,9 @@ public:
 	void PlayerJoined(uint8 PlayerNum);
 
 	UFUNCTION(BlueprintCallable)
+	void RemovePlayersFromSession();
+
+	UFUNCTION(BlueprintCallable)
 	void EnableSplitscreen();
 	
 	UFUNCTION(BlueprintCallable)

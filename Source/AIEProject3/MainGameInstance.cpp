@@ -71,6 +71,19 @@ void UMainGameInstance::PlayerJoined(uint8 PlayerNum)
 	
 }
 
+//Runs when returning to the title from the minigame selection
+void UMainGameInstance::RemovePlayersFromSession()
+{
+	//remove players that have joined
+	for(int32 i = 1; i < 4; i++)
+	{
+		PlayersJoined[i] = false;
+	}
+
+	//make it so it cannot start
+	GameReadyToStart = false;
+}
+
 void UMainGameInstance::EnableSplitscreen()
 {
 	if (!GetWorld()->GetGameViewport())
