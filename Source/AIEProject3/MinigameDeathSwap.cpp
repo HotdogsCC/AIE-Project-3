@@ -31,12 +31,14 @@ void AMinigameDeathSwap::Tick(float DeltaTime)
 {
     Super::Tick(DeltaTime);
 
+    //play a sound to signify we are about to swap
     if(TimeLimit <= 1.5f && !bHasSoundPlayed)
     {
         bHasSoundPlayed = true;
         UGameplayStatics::PlaySound2D(this, SwapSound);
     }
     
+    //when the timer hits 0, swap
     if(TimeLimit == 0)
     {
         SwapPlayers(InitialNumOfPlayers);
@@ -44,6 +46,7 @@ void AMinigameDeathSwap::Tick(float DeltaTime)
         bHasSoundPlayed = false;
     }
 
+    //if someone has the safe guard, do things with it
     if (SafeGuardedPlayer && SafeGuardTextActor)
     {
         ProcessSafeGuard();
@@ -69,21 +72,33 @@ void AMinigameDeathSwap::Tick(float DeltaTime)
             }
             
         }
-        //how many players are alive after someone died
-        switch (GetPlayersAlive())
+
+        //if we should swap maps
+        if (SwitchBetweenMaps)
         {
-        case 3:
-            UGameplayStatics::OpenLevel(this, FName("WG_2Death_Swap_MIni-game"));
-            break;
-        case 2:
-            UGameplayStatics::OpenLevel(this, FName("WG_3Death_Swap_MIni-game"));
-            break;
-        case 1:
-            UGameplayStatics::OpenLevel(this, FName("BetweenMinigames"));
-        default:
-            UGameplayStatics::OpenLevel(this, FName("TitleScreen"));
-            break;
+            //how many players are alive after someone died
+            switch (GetPlayersAlive())
+            {
+            case 3:
+                UGameplayStatics::OpenLevel(this, FName("WG_2Death_Swap_MIni-game"));
+                break;
+            case 2:
+                UGameplayStatics::OpenLevel(this, FName("WG_3Death_Swap_MIni-game"));
+                break;
+            case 1:
+                UGameplayStatics::OpenLevel(this, FName("BetweenMinigames"));
+            default:
+                UGameplayStatics::OpenLevel(this, FName("TitleScreen"));
+                break;
+            }
         }
+        else
+        {
+            //set the amount of players
+            InitialNumOfPlayers = GetPlayersAlive();
+        }
+
+        
         
     }
     
