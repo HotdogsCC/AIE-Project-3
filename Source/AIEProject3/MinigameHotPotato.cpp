@@ -11,6 +11,7 @@
 #include "MainGameInstance.h"
 #include "PipeTravel.h"
 #include "Components/AudioComponent.h"
+#include "GameFramework/CharacterMovementComponent.h"
 
 //called on first frame
 void AMinigameHotPotato::BeginPlay()
@@ -19,6 +20,24 @@ void AMinigameHotPotato::BeginPlay()
 	
 	EndMode = FEndMode::LASTPLAYER;
 	InitTimeLimit = TimeLimit;
+
+	//get the regular speed
+	APlayerController* PlayerController = UGameplayStatics::GetPlayerController(this, 0);
+	if (PlayerController == nullptr)
+	{
+		UE_LOG(LogTemp, Warning, TEXT("failed to find player controller in minigame hot potato"));
+		return;
+	}
+	ACharacter* CharacterPtr = Cast<ACharacter>(PlayerController->GetPawn());
+
+	if (CharacterPtr == nullptr)
+	{
+		UE_LOG(LogTemp, Warning, TEXT("failed to find character from controller in minigame hot potato"));
+		return;
+	}
+
+	RegularWalkSpeed = CharacterPtr->GetCharacterMovement()->MaxWalkSpeed;
+	TaggedWalkSpeed = RegularWalkSpeed * SpeedMultiplier;
 
 	//check there is a valid reference to tagged text
 	if(!TaggedTextBlueprint)
@@ -92,6 +111,9 @@ void AMinigameHotPotato::AssignTagged()
 
 	//Set the tagged player from the controller
 	TaggedPlayer = Cast<AMinigameCharacterBase>(PlayerController->GetPawn());
+
+	//make the tagged player have a speed boot
+	TaggedPlayer->GetCharacterMovement()->MaxWalkSpeed = TaggedWalkSpeed;
 
 	//make sure the tagged player is not null
 	if(!TaggedPlayer)
@@ -199,6 +221,19 @@ void AMinigameHotPotato::PlayerCollision(AMinigameCharacterBase* Character1, AMi
 	//if one of the characters are tagged, swap their tag status
 	if (TaggedPlayer == Character1 || TaggedPlayer == Character2)
 	{
+		//if its character 1
+		if (TaggedPlayer == Character1)
+		{
+			Character1->GetCharacterMovement()->MaxWalkSpeed = RegularWalkSpeed;
+			Character2->GetCharacterMovement()->MaxWalkSpeed = TaggedWalkSpeed;
+		}
+		//otherwise if it is player 2
+		else
+		{
+			Character1->GetCharacterMovement()->MaxWalkSpeed = TaggedWalkSpeed;
+			Character2->GetCharacterMovement()->MaxWalkSpeed = RegularWalkSpeed;
+		}
+
 		TaggedPlayer = (TaggedPlayer == Character1) ? Character2 : Character1;
 	}
 }

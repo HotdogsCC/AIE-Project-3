@@ -31,6 +31,10 @@ public:
 	UPROPERTY(EditDefaultsOnly)
 	TSubclassOf<AActor> TaggedTextBlueprintFast;
 
+	//the multiplier of the speed
+	UPROPERTY(EditDefaultsOnly)
+	float SpeedMultiplier = 1.5f;
+
 	AActor* TaggedTextActor;
 
 	void AddPipe(APipeTravel* Pipe);
@@ -79,4 +83,10 @@ private:
 
 	//prevents lots of sounds
 	bool bFastSoundHasPlayed = false;
+
+	//stores what the regular walk should be
+	float RegularWalkSpeed = -400.0f;
+
+	//stores what the boosted walk spped should be
+	float TaggedWalkSpeed = -200.0f;
 };
