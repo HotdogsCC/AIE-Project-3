@@ -34,6 +34,10 @@ public:
 	UPROPERTY(EditDefaultsOnly)
 	TSubclassOf<ATextRenderActor> SafeGuardTextBlueprint;
 
+	//Whether the map swaps or not
+	UPROPERTY(EditDefaultsOnly)
+	bool SwitchBetweenMaps = false;
+
 	//the instance of the blueprint
 	AActor* SafeGuardTextActor;
 
