@@ -84,7 +84,15 @@ public:
 
 	//bounce force, set it bp
 	UPROPERTY(EditDefaultsOnly, Category = "Bounce")
-	float Bounciness = 5.0f;
+	float Bounciness = 3.0f;
+
+	//bounce force, set it bp
+	UPROPERTY(EditDefaultsOnly, Category = "Bounce")
+	float MinimumBounce = 10.0f;
+
+	//bounce force, set it bp
+	UPROPERTY(EditDefaultsOnly, Category = "Bounce")
+	float MaximumBounce = 100.0f;
 
 	//dash force, set it bp
 	UPROPERTY(EditDefaultsOnly, Category = "Dash")

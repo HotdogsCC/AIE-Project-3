@@ -127,18 +127,43 @@ void AMinigameCharacterBase::NotifyHit(UPrimitiveComponent* HitComp, AActor* Oth
 		FromOtherToThis *= 10000.0f;
 		FromOtherToThis *= Bounciness;
 
-		//add on the forces already present
-
-
+		//get the velocities
 		FVector Player1Vector = GetVelocity();
 		FVector Player2Vector = OtherActor->GetVelocity();
 
+		//get their magnitudes
 		double Player1Force = Player1Vector.Length();
 		double Player2Force = Player2Vector.Length();
 
-
+		//get a resultant magnitude
 		double CombinedForces = Player1Force + Player2Force;
-		FromOtherToThis *= CombinedForces;
+
+		//make sure its actually going to be helpful
+		if (CombinedForces >= 1)
+		{
+			//multiply by the resultant
+			FromOtherToThis *= CombinedForces;
+		}
+		
+
+		//check that there is enough bounce
+		float scaledMinimum = MinimumBounce * 1000000.0f;
+		if (FromOtherToThis.SquaredLength() < (scaledMinimum * scaledMinimum))
+		{
+			//make the bounce the minimum
+			FromOtherToThis.Normalize();
+			FromOtherToThis *= scaledMinimum;
+		}
+
+		//check that there isn't too much bounce 
+		float scaledMaximum = MaximumBounce * 1000000.0f;
+		if (FromOtherToThis.SquaredLength() > (scaledMaximum * scaledMaximum))
+		{
+			//make the bounce the maximum
+			FromOtherToThis.Normalize();
+			FromOtherToThis *= scaledMaximum;
+		}
+
 		
 
 		//set force on this
