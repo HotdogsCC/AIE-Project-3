@@ -53,6 +53,17 @@ void APipeTravel::Tick(float DeltaTime)
 //Called by blueprint, player input is already disabled, lets this class know to start schmovin the player
 void APipeTravel::StartTravelling(AActor* InCharacter)
 {
+	//check that the player is not already in the pipe
+	for(int32 i = 0; i < 4; i++)
+	{
+		//is the character already in the list of characters to travel?
+		if(Players[i] == InCharacter)
+		{
+			//do nothing more
+			return;
+		}
+	}
+	
 	//loops through the array of player pointers and finds first slot available
 	for(int32 i = 0; i < 4; i++)
 	{

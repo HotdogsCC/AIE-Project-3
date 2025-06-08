@@ -74,10 +74,13 @@ void UMainGameInstance::PlayerJoined(uint8 PlayerNum)
 //Runs when returning to the title from the minigame selection
 void UMainGameInstance::RemovePlayersFromSession()
 {
-	//remove players that have joined
-	for(int32 i = 1; i < 4; i++)
+	for(int32 i = 0; i < 4; i++)
 	{
+		//make it so each player has not joined
 		PlayersJoined[i] = false;
+
+		//make it so each player is alive
+		bIsPlayersAlive[i] = true;
 	}
 
 	//make it so it cannot start
