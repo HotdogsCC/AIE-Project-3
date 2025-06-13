@@ -5,6 +5,7 @@
 
 #include "Kismet/GameplayStatics.h"
 #include "MinigameCharacterBase.h"
+#include "Components/AudioComponent.h"
 
 //Returns the number of wins for a given player
 uint8 UMainGameInstance::GetPlayerWins(const uint8 PlayerNum) const
@@ -164,5 +165,19 @@ uint8 UMainGameInstance::GetPlayerWhoWonIndex()
 
 void UMainGameInstance::PlayMinigameSelectionMusic(UObject* WorldContextObject, USoundBase* Sound)
 {
-	UGameplayStatics::SpawnSound2D(WorldContextObject, Sound, 1.0f, 1.0f, 0.0f, nullptr, true);
+	if (MinigameMusic == nullptr)
+	{
+		MinigameMusic = UGameplayStatics::SpawnSound2D(WorldContextObject, Sound, 1.0f, 1.0f, 0.0f, nullptr, true, false);
+	}
+	
+}
+
+void UMainGameInstance::StopMinigameMusic()
+{
+	if (MinigameMusic != nullptr)
+	{
+		MinigameMusic->SetPaused(true);
+		MinigameMusic = nullptr;
+	}
+	
 }

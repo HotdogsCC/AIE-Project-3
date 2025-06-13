@@ -68,6 +68,9 @@ public:
 	UFUNCTION(BlueprintCallable)
 	void PlayMinigameSelectionMusic(UObject* WorldContextObject, USoundBase* Sound);
 
+	UFUNCTION(BlueprintCallable)
+	void StopMinigameMusic();
+
 
 private:
 	UPROPERTY()
@@ -88,4 +91,8 @@ private:
 
 	//stores who won
 	uint8 PlayerWhoWonIndex = 10;
+
+	UPROPERTY()
+	//stores the minigame music currently playing
+	UAudioComponent* MinigameMusic = nullptr;
 };
