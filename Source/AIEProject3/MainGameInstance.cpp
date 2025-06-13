@@ -161,3 +161,8 @@ uint8 UMainGameInstance::GetPlayerWhoWonIndex()
 {
 	return PlayerWhoWonIndex;
 }
+
+void UMainGameInstance::PlayMinigameSelectionMusic(UObject* WorldContextObject, USoundBase* Sound)
+{
+	UGameplayStatics::SpawnSound2D(WorldContextObject, Sound, 1.0f, 1.0f, 0.0f, nullptr, true);
+}

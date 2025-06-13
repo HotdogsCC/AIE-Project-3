@@ -65,6 +65,9 @@ public:
 	UFUNCTION(BlueprintCallable)
 	uint8 GetPlayerWhoWonIndex();
 
+	UFUNCTION(BlueprintCallable)
+	void PlayMinigameSelectionMusic(UObject* WorldContextObject, USoundBase* Sound);
+
 
 private:
 	UPROPERTY()
